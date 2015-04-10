@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		'%APPID%' = s 'IEFull_AFXPlugin'
+		'IEFull_AFXPlugin.DLL'
+		{
+			val AppID = s '%APPID%'
+		}
+	}
+}
