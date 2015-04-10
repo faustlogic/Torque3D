@@ -1,0 +1,607 @@
+
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+// Arcane-FX for MIT Licensed Open Source version of Torque 3D from GarageGames
+//
+// GREAT BALL OF FIRE (Materials)
+//    This file contains shader and material definitions compatible
+//    with the T3D engine.
+//
+// Copyright (C) 2015 Faust Logic, Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+
+//--- OBJECT WRITE BEGIN ---
+%guiContent = new afxTSCtrl(PlayGui) {
+   canSaveDynamicFields = "1";
+   profile = "GuiContentProfile";
+   horizSizing = "right";
+   vertSizing = "bottom";
+   position = "0 0";
+   extent = "640 480";
+   minExtent = "8 8";
+   visible = "1";
+   helpTag = "0";
+
+   new GuiControl(ScreenMessageBox) {
+      canSaveDynamicFields = "0";
+      Profile = "AFX_HUD_MessageBox_Profile";
+      HorizSizing = "center";
+      VertSizing = "relative";
+      position = "0 100";
+      Extent = "512 90";
+      MinExtent = "8 8";
+      canSave = "1";
+      Visible = "0";
+      hoverTime = "1000";
+
+      new GuiMLTextCtrl(ScreenMessageText_A) {
+         canSaveDynamicFields = "0";
+         Profile = "AFX_HUD_MessageText_Profile";
+         HorizSizing = "center";
+         VertSizing = "top";
+         position = "0 0";
+         Extent = "512 25";
+         MinExtent = "8 8";
+         canSave = "1";
+         Visible = "1";
+         hoverTime = "1000";
+         lineSpacing = "2";
+         allowColorChars = "0";
+         maxChars = "-1";
+      };
+      new GuiMLTextCtrl(ScreenMessageText_B) {
+         canSaveDynamicFields = "0";
+         Profile = "AFX_HUD_MessageText_Profile";
+         HorizSizing = "center";
+         VertSizing = "top";
+         position = "0 30";
+         Extent = "512 25";
+         MinExtent = "8 8";
+         canSave = "1";
+         Visible = "1";
+         hoverTime = "1000";
+         lineSpacing = "2";
+         allowColorChars = "0";
+         maxChars = "-1";
+      };
+      new GuiMLTextCtrl(ScreenMessageText_C) {
+         canSaveDynamicFields = "0";
+         Profile = "AFX_HUD_MessageText_Profile";
+         HorizSizing = "center";
+         VertSizing = "top";
+         position = "0 60";
+         Extent = "512 25";
+         MinExtent = "8 8";
+         canSave = "1";
+         Visible = "1";
+         hoverTime = "1000";
+         lineSpacing = "2";
+         allowColorChars = "0";
+         maxChars = "-1";
+      };
+   };
+   new GuiBitmapCtrl(LagIcon) {
+      profile = "GuiDefaultProfile";
+      horizSizing = "right";
+      vertSizing = "bottom";
+      position = "572 3";
+      extent = "32 32";
+      minExtent = "8 8";
+      visible = "0";
+      helpTag = "0";
+      bitmap = "./images/lagIcon";
+      wrap = "0";
+   };
+   new GuiBitmapCtrl(AFX_HUD_Logo) {
+      canSaveDynamicFields = "0";
+      Profile = "GuiDefaultProfile";
+      HorizSizing = "left";
+      VertSizing = "bottom";
+      position = "416 8";
+      Extent = "220 60";
+      MinExtent = "220 60";
+      canSave = "1";
+      Visible = "1";
+      hoverTime = "1000";
+      bitmap = "./images/afx_hud_logo_T3D";
+      wrap = "0";
+   };
+   new afxGuiTextHud() {
+      profile = "AFX_FlyingDamageText_Profile";
+      horizSizing = "width";
+      vertSizing = "height";
+      position = "0 0";
+      Extent = "640 480";
+      minExtent = "8 8";
+      visible = "1";
+      distanceFade = "0.1";
+      labelAllShapes = false;
+   };  
+
+   // The afxEventCatchAll control reroutes all mouse input directly to its parent,
+   // the afxTSCtrl control, PlayGui. Any controls created in PlayGui before this
+   // afxEventCatchAll will be layered "behind" it and will never get any mouse
+   // event. Controls that should respond to mouse input should be placed after
+   // the afxEventCatchAll.
+   new afxEventCatchAll() {
+      canSaveDynamicFields = "0";
+      Profile = "GuiDefaultProfile";
+      HorizSizing = "width";
+      VertSizing = "height";
+      position = "0 0";
+      Extent = "640 480";
+      MinExtent = "8 8";
+      canSave = "1";
+      Visible = "1";
+      hoverTime = "1000";
+   };
+
+   new GuiControl(InfoBoxBackdrop) {
+      canSaveDynamicFields = "0";
+      Profile = "AFX_HUDInfoBoxBackdrop_Profile";
+      HorizSizing = "left";
+      VertSizing = "bottom";
+      position = "400 400";
+      Extent = "300 8";
+      MinExtent = "8 8";
+      canSave = "1";
+      Visible = "0";
+      hoverTime = "1000";
+   };
+   new GuiMLTextCtrl(InfoBox) {
+      canSaveDynamicFields = "1";
+      Profile = "GuiMLTextProfile";
+      HorizSizing = "left";
+      VertSizing = "height";
+      position = "400 400";
+      Extent = "300 8";
+      MinExtent = "8 8";
+      canSave = "1";
+      Visible = "0";
+      hoverTime = "1000";
+      lineSpacing = "2";
+      allowColorChars = "0";
+      maxChars = "-1";
+      description = "<color:FFD200><font:Arial:18>Spell Description";
+   };
+   new afxSpellCastBar(SpellCastBar) {
+      canSaveDynamicFields = "0";
+      Profile = "GuiDefaultProfile";
+      HorizSizing = "center";
+      VertSizing = "top";
+      position = "49 420";
+      Extent = "200 10";
+      MinExtent = "200 10";
+      canSave = "1";
+      Visible = "0";
+      hoverTime = "1000";
+      backgroundColor = "0 0 0 0.4";
+      borderColor = "0.5 0.5 0.5 1";
+      fillColor = "0 1 1 1";
+   };
+   new afxSpellCastBar(SpellCastBar2) {
+      canSaveDynamicFields = "0";
+      Profile = "GuiDefaultProfile";
+      HorizSizing = "center";
+      VertSizing = "top";
+      position = "49 400";
+      Extent = "200 10";
+      MinExtent = "200 10";
+      canSave = "1";
+      Visible = "0";
+      hoverTime = "1000";
+      backgroundColor = "0 0 0 0.4";
+      borderColor = "0.5 0.5 0.5 1";
+      fillColor = "1 0.5 0 1";
+      fillColorFinal = "0 0.9 0 1";
+   };
+   new afxStatusBox(PlayerStatusbar) {
+      canSaveDynamicFields = "0";
+      Profile = "GuiDefaultProfile";
+      HorizSizing = "right";
+      VertSizing = "bottom";
+      position = "8 8";
+      Extent = "210 45";
+      MinExtent = "1 1";
+      canSave = "1";
+      Visible = "1";
+      hoverTime = "1000";
+      bitmap = "./images/statusbar";
+      wrap = "0";
+
+      new afxStatusBar(PlayerHealthStatusBar) {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "4 21";
+         Extent = "202 8";
+         MinExtent = "1 1";
+         canSave = "1";
+         Visible = "1";
+         hoverTime = "1000";
+         fillColor = "0 0.66 0.29 0.8";
+         displayEnergy = "0";
+         monitorPlayer = "1";
+      };
+      new afxStatusBar(PlayerEnergyStatusBar) {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "4 33";
+         Extent = "202 8";
+         MinExtent = "1 1";
+         canSave = "1";
+         Visible = "1";
+         hoverTime = "1000";
+         fillColor = "0 0.15 1.62 0.8";
+         displayEnergy = "1";
+         monitorPlayer = "1";
+      };
+      new afxStatusLabel(PlayerStatusbarLabel) {
+         canSaveDynamicFields = "0";
+         Profile = "InfoBoxProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "0 0";
+         Extent = "120 16";
+         MinExtent = "1 1";
+         canSave = "1";
+         Visible = "1";
+         hoverTime = "1000";
+         lineSpacing = "2";
+         allowColorChars = "0";
+         maxChars = "-1";
+         text = "<color:FFD200><shadow:1:1><shadowcolor:000000><just:center><font:Arial:15>Orc Shaman";
+      };
+   };
+   new GuiBitmapCtrl(TargetStatusbar) {
+      canSaveDynamicFields = "0";
+      Profile = "GuiDefaultProfile";
+      HorizSizing = "right";
+      VertSizing = "bottom";
+      position = "240 8";
+      Extent = "210 45";
+      MinExtent = "1 1";
+      canSave = "1";
+      Visible = "0";
+      hoverTime = "1000";
+      bitmap = "./images/statusbar";
+      wrap = "0";
+
+      new afxStatusBar(TargetHealthStatusBar) {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "4 21";
+         Extent = "202 8";
+         MinExtent = "1 1";
+         canSave = "1";
+         Visible = "1";
+         hoverTime = "1000";
+         fillColor = "0 0.66 0.29 0.8";
+         displayEnergy = "0";
+         monitorPlayer = "0";
+      };
+      new afxStatusBar(TargetEnergyStatusBar) {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "4 33";
+         Extent = "202 8";
+         MinExtent = "1 1";
+         canSave = "1";
+         Visible = "1";
+         hoverTime = "1000";
+         fillColor = "0 0.15 1.62 0.8";
+         displayEnergy = "1";
+         monitorPlayer = "0";
+      };
+      new GuiMLTextCtrl(TargetStatusbarLabel) {
+         canSaveDynamicFields = "0";
+         Profile = "InfoBoxProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "0 1";
+         Extent = "120 15";
+         MinExtent = "1 1";
+         canSave = "1";
+         Visible = "1";
+         hoverTime = "1000";
+         lineSpacing = "2";
+         allowColorChars = "0";
+         maxChars = "-1";
+         text = "<color:FFD200><shadow:1:1><shadowcolor:000000><just:center><font:Arial:15>Target Orc";
+      };
+   };
+   new GuiBitmapCtrl(SpellBank) {
+      canSaveDynamicFields = "1";
+      Profile = "GuiDefaultProfile";
+      HorizSizing = "center";
+      VertSizing = "top";
+      position = "0 440";
+      Extent = "464 40";
+      MinExtent = "464 40";
+      canSave = "1";
+      Visible = "1";
+      hoverTime = "1000";
+      bitmap = "./images/spellbank";
+      wrap = "0";
+      num_pages = "12";
+      page = "0";
+
+      new GuiBitmapButtonCtrl(SpellBankUp) {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "top";
+         position = "5 4";
+         Extent = "21 16";
+         MinExtent = "21 16";
+         canSave = "1";
+         Visible = "1";
+         Command = "SpellBank.prevPage();";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/bank_up";
+      };
+      new GuiBitmapButtonCtrl(SpellBankDown) {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "top";
+         position = "5 20";
+         Extent = "21 16";
+         MinExtent = "21 16";
+         canSave = "1";
+         Visible = "1";
+         Command = "SpellBank.nextPage();";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/bank_dn";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "32 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "1";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 0";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "68 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "2";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 1";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "104 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "3";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 2";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "140 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "4";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 3";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "176 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "5";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 4";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "212 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "6";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 5";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "248 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "7";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 6";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "284 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "8";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 7";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "320 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "9";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 8";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "356 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "0";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 9";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "392 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "-";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 10";
+      };
+      new afxSpellButton() {
+         canSaveDynamicFields = "0";
+         Profile = "GuiDefaultProfile";
+         HorizSizing = "relative";
+         VertSizing = "relative";
+         position = "428 4";
+         Extent = "32 32";
+         MinExtent = "32 32";
+         canSave = "1";
+         Visible = "1";
+         Command = "spellButtonCastSpell($ThisControl);";
+         Accelerator = "=";
+         hoverTime = "1000";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         bitmap = "./images/unknown";
+         book_slot = "0 11";
+      };
+   };
+};
+
+//--- OBJECT WRITE END ---
+
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//

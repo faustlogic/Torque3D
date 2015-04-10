@@ -1,0 +1,459 @@
+
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+// Arcane-FX for MIT Licensed Open Source version of Torque 3D from GarageGames
+//
+// GREAT BALL OF FIRE (Materials)
+//    This file contains shader and material definitions compatible
+//    with the T3D engine.
+//
+// Copyright (C) 2015 Faust Logic, Inc.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+// IN THE SOFTWARE.
+//
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+
+//--- OBJECT WRITE BEGIN ---
+//new GuiChunkedBitmapCtrl(EFF_fxFilteringGui) {
+new GuiControl(EFF_fxFilteringGui) {
+   //profile = "GuiContentProfile";
+   Profile = "GuiOverlayProfile";
+   horizSizing = "width";
+   vertSizing = "height";
+   position = "0 0";
+   extent = "640 480";
+   minExtent = "8 8";
+   visible = "1";
+   //bitmap = "./images/afx_background";
+   //bitmap = "art/gui/background";
+   useVariable = "0";
+   tile = "0";
+   helpTag = "0";
+
+   //new GuiControl() {
+   new GuiWindowCtrl() {
+      profile = "GuiWindowProfile";
+      horizSizing = "center";
+      vertSizing = "center";
+      position = "92 86";
+      extent = "455 308";
+      minExtent = "8 8";
+      visible = "1";
+      helpTag = "0";
+      text = "Select which effects scripts to load";
+      closeCommand = "Canvas.popDialog(EFF_fxFilteringGui);";
+      Margin = "0 0 0 0";
+      Padding = "0 0 0 0";
+      AnchorTop = "1";
+      AnchorBottom = "0";
+      AnchorLeft = "1";
+      AnchorRight = "0";
+      resizeWidth = "0";
+      resizeHeight = "0";
+      canMove = "1";
+      canClose = "1";
+      canMinimize = "0";
+      canMaximize = "0";
+
+      /*
+      new GuiTextCtrl() {
+         profile = "GuiTextProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "12 12";
+         extent = "200 18";
+         minExtent = "8 8";
+         visible = "1";
+         text = "Select which FX scripts to load:";
+         maxLength = "255";
+         helpTag = "0";
+      };
+      */
+
+      new GuiScrollCtrl(EFF_Scroller) {
+         profile = "GuiScrollProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "10 31";
+         extent = "436 230";
+         minExtent = "8 8";
+         visible = "1";
+         willFirstRespond = "1";
+         hScrollBar = "alwaysOff";
+         vScrollBar = "alwaysOn";
+         constantThumbHeight = "0";
+         childMargin = "0 0";
+         helpTag = "0";
+         defaultLineHeight = "15";
+
+         new GuiControl(EFF_FiltersBox)
+         {
+            horizSizing = "right";
+            vertSizing = "bottom";
+            position = "0 0";
+            extent = "436 80";
+            minExtent = "8 8";
+            visible = "1";
+         };
+      };
+
+      // BOTTOM ROW
+
+      // CANCEL BUTTON
+      new GuiButtonCtrl() {
+         profile = "GuiButtonProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "10 272";
+         extent = "82 23";
+         minExtent = "8 8";
+         visible = "1";
+         command = "EFF_fxFilteringGui.cancel();";
+         text = "Cancel";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         helpTag = "0";
+      };
+
+      // SELECT/DESELECT ALL
+      new GuiCheckBoxCtrl(EFF_ToggleAll) {
+         profile = "GuiCheckBoxProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "140 272";
+         extent = "147 23";
+         minExtent = "8 8";
+         visible = "1";
+         text = " Select/Deselect All";
+         groupNum = "-1";
+         buttonType = "ToggleButton";
+         helpTag = "0";
+         maxLength = "255";
+         command = "EFF_ToggleAll.toggle();";
+      };
+
+      // DONE BUTTON
+      new GuiButtonCtrl() {
+         profile = "GuiButtonProfile";
+         horizSizing = "right";
+         vertSizing = "bottom";
+         position = "342 271";
+         extent = "105 23";
+         minExtent = "8 8";
+         visible = "1";
+         command = "EFF_fxFilteringGui.done();";
+         text = "Done";
+         groupNum = "-1";
+         buttonType = "PushButton";
+         helpTag = "0";
+      };
+   };
+};
+//--- OBJECT WRITE END ---
+
+function EFF_fxFilteringGui::loadFilters()
+{
+   if (!$pref::AFX::enableFXLoadFiltering)
+      return;
+
+   afxDisabledModules.clear();
+
+   // load script states from file
+   %disabled_fx_file =  "scripts/server/afx/effects/disabled_fx.txt";
+   if (isFile(%disabled_fx_file))
+   {
+      %fp = new FileObject();
+      if (%fp.openForRead(%disabled_fx_file))
+      {
+         while (!%fp.isEOF()) 
+         {
+            %line = ltrim(%fp.readLine());
+            // skip BLANKS and COMMENTS
+            if (%line !$= "" && getSubStr(%line, 0, 2) !$= "//")
+            {
+              afxDisabledModules.add(expandFilename(%line));
+            }
+         }
+         %fp.close();
+      }
+      %fp.delete();
+   }
+}
+
+function EFF_fxFilteringGui::cancel()
+{
+   //Canvas.setContent(startMissionGui_AFX);
+   //Canvas.setContent(ChooseLevelDlg);
+   Canvas.popDialog(EFF_fxFilteringGui);
+}
+
+function EFF_fxFilteringGui::done()
+{
+   // save script states to file
+   %disabled_fx_file =  "scripts/server/afx/effects/disabled_fx.txt";
+   %fp = new FileObject();
+   if (%fp.openForWrite(%disabled_fx_file))
+   {
+      %fp.writeLine("// This file is generated by the FX Load Filtering interface.");
+      %fp.writeLine("// It contains a list of autoloadable effects scripts that should *not* be loaded.");
+      %fp.writeLine("//");
+      %n = EFF_FiltersBox.getCount();
+      for (%i = 0; %i < %n; %i++)
+      {
+         %obj = EFF_FiltersBox.getObject(%i);
+         if (%obj.getClassName() $= "GuiCheckBoxCtrl")
+         {
+            if (!%obj.getValue() && %obj.fullpath !$= "")
+            {
+               %fp.writeLine(%obj.fullpath);
+            }
+         }
+      }
+      %fp.close();
+   }
+   %fp.delete();
+
+   //Canvas.setContent(startMissionGui_AFX);
+   //Canvas.setContent(ChooseLevelDlg);
+   Canvas.popDialog(EFF_fxFilteringGui);
+}
+
+function EFF_ToggleAll::toggle(%this)
+{
+   %my_state = %this.getValue();
+
+   %n = EFF_FiltersBox.getCount();
+   for (%i = 0; %i < %n; %i++)
+   {
+      %obj = EFF_FiltersBox.getObject(%i);
+      if (%obj.getClassName() $= "GuiCheckBoxCtrl" && %obj.isActive())
+         %obj.setValue(%my_state);
+   }
+
+   //EFF_FiltersBox.setActive(%this.getValue());
+}
+
+function EFF_fxFilteringGui::onWake(%this)
+{
+   EFF_fxFilteringGui.init();
+}
+
+function EFF_fxFilteringGui::folderClick(%this, %button)
+{
+   %n = EFF_FiltersBox.getCount();
+
+   // locate the button index
+   %idx = -1;
+   for (%i = 0; %i < %n && %idx == -1; %i++)
+   {
+      %obj = EFF_FiltersBox.getObject(%i);
+      if (%obj == %button)
+         %idx = %i;
+   }
+
+   // total up the on/off settings
+   %n_on = 0;
+   %n_off = 0;
+   %all_checked = 0;
+   for (%i = %idx+1; %i < %n && %all_checked == 0; %i++)
+   {
+      %obj = EFF_FiltersBox.getObject(%i);
+      if (%obj.getClassName() !$= "GuiCheckBoxCtrl")
+         %all_checked = 1;
+      else if (%obj.isActive())
+      {
+         if (%obj.getValue())
+            %n_on++;
+         else
+            %n_off++;
+      }
+   }
+
+   %val = (%n_on <= %n_off);
+
+   // set to new value
+   %all_checked = 0;
+   for (%i = %idx+1; %i < %n && %all_checked == 0; %i++)
+   {
+      %obj = EFF_FiltersBox.getObject(%i);
+      if (%obj.getClassName() !$= "GuiCheckBoxCtrl")
+         %all_checked = 1;
+      else if (%obj.isActive())
+         %obj.setValue(%val);
+   }
+}
+
+function EFF_fxFilteringGui::add_folder_item(%this, %pos, %foldername)
+{
+   %item = new GuiButtonCtrl() {
+			profile = "GuiTextProfile";
+            horizSizing = "right";
+            vertSizing = "bottom";
+            position = %pos;
+            extent = "400 23";
+            minExtent = "8 8";
+            visible = "1";
+            text = " " @ %foldername;
+            maxLength = "255";
+            helpTag = "0";
+            command = "EFF_fxFilteringGui.folderClick($ThisControl);";
+         };
+   EFF_FiltersBox.add(%item);
+}
+
+function EFF_fxFilteringGui::add_script_item(%this, %pos, %scriptname, %state, %active, %label)
+{
+   %text_entry = fileName(%scriptname) SPC %label;
+
+   %item = new GuiCheckBoxCtrl() {
+            profile = "GuiCheckBoxProfile";
+            horizSizing = "right";
+            vertSizing = "bottom";
+            position = %pos;
+            extent = "400 23";
+            minExtent = "8 8";
+            visible = "1";
+            text = " " @ %text_entry;
+            groupNum = "-1";
+            buttonType = "ToggleButton";
+            helpTag = "0";
+            maxLength = "255";
+            value = %state;
+         };
+   %item.fullpath = %scriptname;
+   %item.setValue(%state);
+   %item.setActive(%active);
+   EFF_FiltersBox.add(%item);
+}
+
+function EFF_fxFilteringGui::init(%this) 
+{
+   // collect all the scripts
+   %pattern = "scripts/server/afx/effects/*/*.cs";
+   %n_folders = 0;
+
+   for (%file = findFirstFile(%pattern); %file !$= ""; %file = findNextFile(%pattern)) 
+   {
+      // check if script is a sub-script
+      %filebase = fileBase(%file);
+      %filebase_len = strlen(%filebase);
+      if (%filebase_len > 4)
+      {
+        if (strcmp(getSubStr(%filebase, %filebase_len-4, 4), "_sub") == 0)
+          continue;
+      }      
+      
+      %path = filePath(%file);
+      %tokens = %path;
+      %folder = "";
+      while (%tokens !$= "")
+      {
+         %tokens = nextToken(%tokens, "tokfolder", "/");
+         if (%tokfolder !$= "")
+            %folder = %tokfolder;
+      }
+
+      // at this point %folder contains a folder name and %file a path to a script.
+
+      %n = %fx_scripts[%folder];
+      if (%n > 0)
+      {
+        %fx_scripts[%folder,%n] = %file;
+        %n++;
+        %fx_scripts[%folder] = %n;
+      }
+      else
+      {
+         %fx_folders[%n_folders] = %folder;
+         %n_folders++;
+         %fx_scripts[%folder,0] = %file;
+         %fx_scripts[%folder] = 1;
+      }
+   }
+
+   %n_disabled_fx = 0;
+
+   // load script states from file
+   %disabled_fx_file = "scripts/server/afx/effects/disabled_fx.txt";
+   if (isFile(%disabled_fx_file))
+   {
+      %fp = new FileObject();
+      if (%fp.openForRead(%disabled_fx_file))
+      {
+         while (!%fp.isEOF()) 
+         {
+            %line = ltrim(%fp.readLine());
+            // skip BLANKS and COMMENTS
+            if (%line !$= "" && getSubStr(%line, 0, 2) !$= "//")
+            {
+               %disabled_fx[%n_disabled_fx] = expandFilename(%line);
+               %n_disabled_fx++;
+            }
+         }
+         %fp.close();
+      }
+      %fp.delete();
+   }
+
+   // build checkable items interface
+   EFF_FiltersBox.clear();
+   EFF_Scroller.scrollToTop();
+
+   %folder_label_x = 10;
+   %script_label_x = %folder_label_x + 20;
+   %pos_y = 0;
+
+   //for (%f = %n_folders-1; %f >= 0; %f--)
+   for (%f = 0; %f < %n_folders; %f++)
+   {
+      %folder = %fx_folders[%f];
+      %n = %fx_scripts[%folder];
+      if (%n > 0)
+      {
+         // add a folder heading
+         %pos_y += 4;
+         //if (%f != %n_folders-1)
+         if (%f != 0)
+            %pos_y += 10;
+         %pos = %folder_label_x SPC %pos_y; 
+         %pos_y += 24;
+         %this.add_folder_item(%pos, %folder);
+
+         //for (%g = %n-1; %g >= 0; %g--)
+         for (%g = 0; %g < %n; %g++)
+         {
+            // add a script checkmark
+            %pos = %script_label_x SPC %pos_y; 
+            %pos_y += 20;
+            %item_is_on = true;
+            %fx_script = %fx_scripts[%folder,%g];
+            for (%i = 0; %i < %n_disabled_fx && %item_is_on; %i++)
+               if (%disabled_fx[%i] $= %fx_script)
+                  %item_is_on = false;
+            if (fileBase(%fx_script) $= "std_selectron" && %folder $= "CoreTech")
+               %this.add_script_item(%pos, %fx_script, 1, 0, "(required)");
+            else
+               %this.add_script_item(%pos, %fx_script, %item_is_on, 1);
+         }
+      }
+   }
+
+   EFF_FiltersBox.resize(0, 0, 436, %pos_y + 20);
+}
+
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
