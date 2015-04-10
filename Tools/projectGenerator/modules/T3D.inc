@@ -73,6 +73,16 @@ elseif ( $TORQUE_EXTENDED_MOVE == true )
 else
 	addEngineSrcDir('T3D/gameBase/std');
 
+// AFX
+addEngineSrcDir('afx');
+addEngineSrcDir('afx/ce');
+addEngineSrcDir('afx/ea');
+addEngineSrcDir('afx/forces');
+addEngineSrcDir('afx/rpg');
+addEngineSrcDir('afx/ui');
+addEngineSrcDir('afx/util');
+addEngineSrcDir('afx/xm');
+
 // Plstform specific stuff.
 switch( T3D_Generator::$platform )
 {

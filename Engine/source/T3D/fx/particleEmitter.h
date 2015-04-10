@@ -57,7 +57,7 @@ class RenderPassManager;
 class ParticleData;
 
 // AFX CODE BLOCK (pooled-particles) <<
-//#define AFX_CAP_PARTICLE_POOLS
+#define AFX_CAP_PARTICLE_POOLS
 #if defined(AFX_CAP_PARTICLE_POOLS)
 class afxParticlePoolData;
 class afxParticlePool;

@@ -47,6 +47,10 @@
 #include "T3D/aiConnection.h"
 #endif
 
+// AFX CODE BLOCK (scope-tracking) <<
+#include "afx/arcaneFX.h"
+// AFX CODE BLOCK (scope-tracking) >>
+
 //----------------------------------------------------------------------------
 // Ghost update relative priority values
 
@@ -264,6 +268,10 @@ GameBase::GameBase()
 
 GameBase::~GameBase()
 {
+   // AFX CODE BLOCK (scope-tracking) <<
+   if (scope_registered)
+      arcaneFX::unregisterScopedObject(this);
+   // AFX CODE BLOCK (scope-tracking) >>
 }
 
 
@@ -276,8 +284,23 @@ bool GameBase::onAdd()
 
    // Datablock must be initialized on the server.
    // Client datablock are initialized by the initial update.
+   
+   // AFX CODE BLOCK (scope-tracking) <<
+   if (isClientObject())
+   {
+      if (scope_id > 0 && !scope_registered)
+         arcaneFX::registerScopedObject(this);
+   }
+   else
+   {
+      if ( mDataBlock && !onNewDataBlock( mDataBlock, false ) )
+         return false;
+   }
+   /* ORIGINAL CODE
    if ( isServerObject() && mDataBlock && !onNewDataBlock( mDataBlock, false ) )
       return false;
+   */
+   // AFX CODE BLOCK (scope-tracking) >>
 
    setProcessTick( true );
 
@@ -286,6 +309,11 @@ bool GameBase::onAdd()
 
 void GameBase::onRemove()
 {
+   // AFX CODE BLOCK (scope-tracking) <<
+   if (scope_registered)
+      arcaneFX::unregisterScopedObject(this);
+   // AFX CODE BLOCK (scope-tracking) >>
+
    // EDITOR FEATURE: Remove us from the reload signal of our datablock.
    if ( mDataBlock )
       mDataBlock->mReloadSignal.remove( this, &GameBase::_onDatablockModified );
@@ -567,6 +595,14 @@ U32 GameBase::packUpdate( NetConnection *connection, U32 mask, BitStream *stream
    stream->writeFlag(mIsAiControlled);
 #endif
 
+   // AFX CODE BLOCK (scope-tracking) <<
+   if (stream->writeFlag(mask & ScopeIdMask))
+   {
+      if (stream->writeFlag(scope_refs > 0))
+         stream->writeInt(scope_id, SCOPE_ID_BITS);
+   }
+   // AFX CODE BLOCK (scope-tracking) >>
+
    return retMask;
 }
 
@@ -605,6 +641,14 @@ void GameBase::unpackUpdate(NetConnection *con, BitStream *stream)
    mTicksSinceLastMove = 0;
    mIsAiControlled = stream->readFlag();
 #endif
+
+   // AFX CODE BLOCK (scope-tracking) <<
+   if (stream->readFlag())
+   {
+      scope_id = (stream->readFlag()) ? (U16) stream->readInt(SCOPE_ID_BITS) : 0;
+      scope_refs = 0;
+   }
+   // AFX CODE BLOCK (scope-tracking) >>
 }
 
 void GameBase::onMount( SceneObject *obj, S32 node )

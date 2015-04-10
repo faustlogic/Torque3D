@@ -20,6 +20,14 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+// Arcane-FX for MIT Licensed Open Source version of Torque 3D from GarageGames
+// Copyright (C) 2015 Faust Logic, Inc.
+//
+//    Changes:
+//        terrain-zodiacs -- Changes made for rendering zodiacs on regular terrain.
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+
 #include "platform/platform.h"
 #include "terrain/terrData.h"
 
@@ -195,6 +203,11 @@ TerrainBlock::TerrainBlock()
 {
    mTypeMask = TerrainObjectType | StaticObjectType | StaticShapeObjectType;
    mNetFlags.set(Ghostable | ScopeAlways);
+
+   // AFX CODE BLOCK (terrain-zodiacs) <<
+   mIgnoreZodiacs = false;
+   zode_primBuffer = 0;
+   // AFX CODE BLOCK (terrain-zodiacs) >>
 }
 
 
@@ -213,6 +226,10 @@ TerrainBlock::~TerrainBlock()
    if (editor)
       editor->detachTerrain(this);
 #endif
+
+   // AFX CODE BLOCK (terrain-zodiacs) <<
+   deleteZodiacPrimitiveBuffer();
+   // AFX CODE BLOCK (terrain-zodiacs) >>
 }
 
 void TerrainBlock::_onTextureEvent( GFXTexCallbackCode code )
@@ -974,6 +991,10 @@ void TerrainBlock::_rebuildQuadtree()
 
    // Build the shared PrimitiveBuffer.
    mCell->createPrimBuffer( &mPrimBuffer );
+
+   // AFX CODE BLOCK (terrain-zodiacs) <<
+   deleteZodiacPrimitiveBuffer();
+   // AFX CODE BLOCK (terrain-zodiacs) >>
 }
 
 void TerrainBlock::_updatePhysics()
@@ -1112,6 +1133,12 @@ void TerrainBlock::initPersistFields()
 
    endGroup( "Misc" );
 
+   // AFX CODE BLOCK (terrain-zodiacs) <<
+   addGroup("AFX");
+   addField("ignoreZodiacs",     TypeBool,      Offset(mIgnoreZodiacs,    TerrainBlock));
+   endGroup("AFX");
+   // AFX CODE BLOCK (terrain-zodiacs) >>
+
    Parent::initPersistFields();
 
    removeField( "scale" );
@@ -1160,6 +1187,10 @@ U32 TerrainBlock::packUpdate(NetConnection* con, U32 mask, BitStream *stream)
 
    if ( stream->writeFlag( mask & MiscMask ) )
       stream->write( mScreenError );
+
+   // AFX CODE BLOCK (terrain-zodiacs) <<
+   stream->writeFlag(mIgnoreZodiacs);
+   // AFX CODE BLOCK (terrain-zodiacs) >>
 
    return retMask;
 }
@@ -1227,6 +1258,10 @@ void TerrainBlock::unpackUpdate(NetConnection* con, BitStream *stream)
 
    if ( stream->readFlag() ) // MiscMask
       stream->read( &mScreenError );
+
+   // AFX CODE BLOCK (terrain-zodiacs) <<
+   mIgnoreZodiacs = stream->readFlag();
+   // AFX CODE BLOCK (terrain-zodiacs) >>
 }
 
 void TerrainBlock::getMinMaxHeight( F32 *minHeight, F32 *maxHeight ) const 
@@ -1371,3 +1406,21 @@ ConsoleFunction(getTerrainHeightBelowPosition, F32, 2, 4, "(Point3F pos) - gets 
 	
 	return height;
 }
+
+// AFX CODE BLOCK (terrain-zodiacs) <<
+const U16* TerrainBlock::getZodiacPrimitiveBuffer()
+{ 
+   if (!zode_primBuffer && !mIgnoreZodiacs)
+      TerrCell::createZodiacPrimBuffer(&zode_primBuffer);
+   return zode_primBuffer;
+}
+
+void TerrainBlock::deleteZodiacPrimitiveBuffer()
+{
+   if (zode_primBuffer != 0)
+   {
+      delete [] zode_primBuffer;
+      zode_primBuffer = 0;
+   }
+}
+// AFX CODE BLOCK (terrain-zodiacs) >>
