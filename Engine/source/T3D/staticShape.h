@@ -20,6 +20,15 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+// Arcane-FX for MIT Licensed Open Source version of Torque 3D from GarageGames
+// Copyright (C) 2015 Faust Logic, Inc.
+//
+//    Changes:
+//        datablock-temp-clone -- Implements creation of temporary datablock clones to
+//            allow late substitution of datablock fields.
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+
 #ifndef _STATICSHAPE_H_
 #define _STATICSHAPE_H_
 
@@ -45,6 +54,11 @@ struct StaticShapeData: public ShapeBaseData {
    static void initPersistFields();
    virtual void packData(BitStream* stream);
    virtual void unpackData(BitStream* stream);
+   // AFX CODE BLOCK (datablock-temp-clone) <<
+public:
+   StaticShapeData(const StaticShapeData&, bool = false);
+   virtual bool   allowSubstitutions() const { return true; }
+   // AFX CODE BLOCK (datablock-temp-clone) >>
 };
 
 

@@ -20,6 +20,17 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+// Arcane-FX for MIT Licensed Open Source version of Torque 3D from GarageGames
+// Copyright (C) 2015 Faust Logic, Inc.
+//
+//    Changes:
+//        scope-tracking -- changes related to the tracking of AFX constraint objects as
+//            they move in and out of scope.
+//        datablock-temp-clone -- Implements creation of temporary datablock clones to
+//            allow late substitution of datablock fields.
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+
 #include "platform/platform.h"
 #include "T3D/gameBase/gameBase.h"
 #include "console/consoleTypes.h"
@@ -122,6 +133,15 @@ GameBaseData::GameBaseData()
    category = "";
    packed = false;
 }
+
+// AFX CODE BLOCK (datablock-temp-clone) <<
+GameBaseData::GameBaseData(const GameBaseData& other, bool temp_clone) : SimDataBlock(other, temp_clone)
+{
+   packed = other.packed;
+   category = other.category;
+   //mReloadSignal = other.mReloadSignal; // DO NOT copy the mReloadSignal member. 
+}
+// AFX CODE BLOCK (datablock-temp-clone) >>
 
 void GameBaseData::inspectPostApply()
 {
@@ -290,6 +310,12 @@ bool GameBase::onNewDataBlock( GameBaseData *dptr, bool reload )
 
    if ( !mDataBlock )
       return false;
+
+   // AFX CODE BLOCK (datablock-temp-clone) <<
+   // Don't set mask when new datablock is a temp-clone.
+   if (mDataBlock->isTempClone())
+      return true;
+   // AFX CODE BLOCK (datablock-temp-clone) >>
 
    setMaskBits(DataBlockMask);
    return true;
