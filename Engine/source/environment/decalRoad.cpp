@@ -732,7 +732,15 @@ void DecalRoad::prepRenderImage( SceneRenderState* state )
    MathUtils::getZBiasProjectionMatrix( gDecalBias, frustum, tempMat );
    coreRI.projection = tempMat;
 
+   // AFX CODE BLOCK <<
+   // RIT_DecalAlt allows render-order of DecalRoad objects to be specified separately from
+   // other decals. They layer better with zodiacs if rendered earlier in the render passes, but
+   // other decals should still be rendered later. 
+   coreRI.type = RenderPassManager::RIT_DecalAlt;
+   /* ORIGINAL CODE
    coreRI.type = RenderPassManager::RIT_Decal;
+   */
+   // AFX CODE BLOCK >>
    coreRI.vertBuff = &mVB;
    coreRI.primBuff = &mPB;
    coreRI.matInst = matInst;

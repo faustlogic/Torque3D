@@ -79,6 +79,9 @@ RenderPrePassMgr::RenderPrePassMgr( bool gatherDepth,
       mPrePassMatInstance( NULL )
 {
    notifyType( RenderPassManager::RIT_Decal );
+   // AFX CODE BLOCK <<
+   notifyType( RenderPassManager::RIT_DecalAlt );
+   // AFX CODE BLOCK >>
    notifyType( RenderPassManager::RIT_Mesh );
    notifyType( RenderPassManager::RIT_Terrain );
    notifyType( RenderPassManager::RIT_Object );
@@ -191,7 +194,13 @@ void RenderPrePassMgr::addElement( RenderInst *inst )
       return;
 
    // First what type of render instance is it?
+   // AFX CODE BLOCK <<
+   const bool isDecalMeshInst = inst->type == RenderPassManager::RIT_Decal || 
+                                inst->type == RenderPassManager::RIT_DecalAlt;
+   /* ORIGINAL CODE
    const bool isDecalMeshInst = inst->type == RenderPassManager::RIT_Decal;
+   */
+   // AFX CODE BLOCK >>
 
    const bool isMeshInst = inst->type == RenderPassManager::RIT_Mesh;
 
