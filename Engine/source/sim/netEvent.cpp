@@ -344,6 +344,12 @@ void NetConnection::eventReadPacket(BitStream *bstream)
       if(unguaranteedPhase)
       {
          evt->process(this);
+         // AFX CODE BLOCK (bug-fix) <<
+         // for events that are not GuaranteedOrdered we can get here w/o ever
+         // incrementing ref-count on the event.
+         if (evt->getRefCount() == 0)
+            evt->incRef();
+         // AFX CODE BLOCK (bug-fix) >>
          evt->decRef();
          if(mErrorBuffer.isNotEmpty())
             return;
