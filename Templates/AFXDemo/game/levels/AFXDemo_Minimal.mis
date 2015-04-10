@@ -1,0 +1,185 @@
+//--- OBJECT WRITE BEGIN ---
+new SimGroup(MissionGroup) {
+   new LevelInfo(theLevelInfo) {
+      levelName = "Minimal Mission";
+      desc0 = "A lightweight daytime level without buildings or water.<br>" @
+              "<br>" @
+              "Dramatis Personae:<br>" @
+              "    1 patrolling orc<br>" @
+              "    1 orc corpse<br>" @
+              "<br>" @
+              "Spawns: 1  Teleports: 10";
+      nearClip = "0.1";
+      visibleDistance = "1000";
+      decalBias = "0.0015";
+      fogColor = "0.4 0.4 0.4 1";
+      fogDensity = "0.01";
+      fogDensityOffset = "500";
+      fogAtmosphereHeight = "300";
+      canvasClearColor = "13 48 4 255";
+      isNightMission = false;
+      hasBrightLighting = true;
+      startupEffectsFunc = "";
+      gameType = AFXDemo;
+   };
+   new MissionArea(theMissionArea) {
+      area = "-152 -352 1040 1056";
+      flightCeiling = "300";
+      flightCeilingRange = "20";
+   };
+   new SkyBox(theSky) {
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      Material = "AFX_DaySky_MTL";
+      drawBottom = "0";
+      fogBandHeight = "0.6";
+   };
+   new Sun(theSun) {
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      azimuth = "45";
+      elevation = "35";
+      color = "1 0.97 0.86 1";
+      ambient = "0.18 0.18 0.2 1";
+      brightness = "1";
+      castShadows = true;
+      coronaEnabled = true;
+      coronaMaterial = "Corona_Mat";
+      coronaScale = "0.18";
+      coronaTint = "1 1 1 1";
+      coronaUseLightColor = "1";
+      flareType = "SunFlareExample3";
+      flareScale = "1.5";
+      attenuationRatio = "0 1 1";
+      shadowType = "PSSM";
+      texSize = "1024";
+      overDarkFactor = "3000 1500 750 500";
+      shadowDistance = "250";
+      shadowSoftness = "0.4";
+      numSplits = "4";
+      logWeight = "0.9";
+      fadeStartDistance = "0";
+      lastSplitTerrainOnly = "0";
+      representedInLightmap = "0";
+      shadowDarkenColor = "0 0 0 -1";
+      includeLightmappedGeometryInShadow = "0";
+   };
+   new TerrainBlock(Terrain) {
+      position = "-1024 -1024 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      terrainFile = "art/terrains/classic/AFXDemo_Classic.ter";
+      squareSize = "8";
+      tile = "1";
+      baseTexSize = "2048";
+      screenError = "16";
+   };
+   new SimGroup(PlayerDropPoints) {
+      new SpawnSphere(Spawn_Mark) {
+         position = "430 310 218.6";
+         rotation = "0 0 -1 87.6625";
+         scale = "1 1 1";
+         dataBlock = "SpawnSphereMarker";
+         radius = "1";
+         spawnClass = "Player";
+         spawnDatablock = "OrcMageData";
+         sphereWeight = "100";
+         indoorWeight = "100";
+         outdoorWeight = "100";
+      };
+   };
+   new SimGroup(TeleportSpots) {
+     new SpawnSphere(:Spawn_Mark) {
+         position = "430 310 218.6";
+         rotation = "0 0 -1 87.6625";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "402 331 219.832";
+         rotation = "0 0 -1 87.6625";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "333 339 218.849";
+         rotation = "0 0 1 154.699";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "356 246 202.064";
+         rotation = "0 0 1 16.0429";
+      };
+
+      new SpawnSphere(:Spawn_Mark) {
+         position = "574.0 155.0 268.876";
+         rotation = "0 0 -1 50.0039";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "215 169.5 226.176";
+         rotation = "0 0 1 41.8259";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "33 -17.8 277.821";
+         rotation = "0 0 1 44.6907";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-39 -415 245.829";
+         rotation = "0 0 1 40.1071";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "504 439.5 270.826";
+         rotation = "0 0 1 225.355";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "406.5 528 233.048";
+         rotation = "0 0 1 179.336";
+      };
+   };
+   new SimGroup(Campfires) {
+      new TSStatic(CampFire) {
+         position = "360.173 309.959 217.714";
+         rotation = "1 0 0 0.573347";
+         scale = "1 1 1";
+         shapeName = "art/shapes/campfires/campfire.dts";
+         isTerrainLikeObject = true;
+         collisionType = "Bounds";
+         decalType = "Visible Mesh";
+      };
+   };
+   new SimGroup(NPCPaths) {
+      new Path() {
+         firstWaypoint = 0;
+         traversal = "randomized";
+         isLooping = true;
+         npcName = "Undead Orc";
+         npcHealth = 0;
+         npcFlavor = "patrol";
+         npcWeapon = "crossbow";
+         new Marker(Path_Mark) {
+            position = "420 300 221.011";
+            rotation = "1 0 0 0";
+            scale = "1 1 1";
+            type = "Normal";
+            msToNext = "0";
+            smoothingType = "Spline";
+         };
+         new Marker(:Path_Mark) { position = "447.831 207.249 211.417"; };
+         new Marker(:Path_Mark) { position = "318.054 333.549 218.804"; };
+         new Marker(:Path_Mark) { position = "326.058 411.942 218.216"; };
+         new Marker(:Path_Mark) { position = "427.95 357.661 220.594"; };
+      };
+      new Path() {
+        firstWaypoint = 0;
+        traversal = "randomized";
+        isLooping = true;
+        npcName = "Orc On Patrol";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        new Marker(:Path_Mark) { position = "335.673 334.697 218.5"; };
+        new Marker(:Path_Mark) { position = "384.192 296.064 219.3"; };
+        new Marker(:Path_Mark) { position = "392.792 327.464 220.7"; };
+        new Marker(:Path_Mark) { position = "337.392 304.464 218.5"; };
+      };
+   };
+};
+//--- OBJECT WRITE END ---
+

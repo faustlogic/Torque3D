@@ -1,0 +1,94 @@
+//--- OBJECT WRITE BEGIN ---
+new SimGroup(MissionGroup) {
+   new LevelInfo(theLevelInfo) {
+      levelName = "Vacant Space";
+      desc0 = "A totally empty level.<br>" @
+              "<br>" @
+              "Dramatis Personae:<br>" @
+              "    The cheese stands alone<br>" @
+              "<br>" @
+              "Spawns: 1  Teleports: 1";
+      visibleDistance = "1000";
+      fogColor = "0.29 0.27 0.305 1";
+      fogDensity = "0";
+      fogDensityOffset = "0";
+      fogAtmosphereHeight = "0";
+      canvasClearColor = "75 69 78 255";
+      isNightMission = false;
+      hasBrightLighting = false;
+      startupEffectsFunc = "";
+      gameType = AFXDemo;
+   };
+   new SkyBox(theSky) {
+      canSaveDynamicFields = "1";
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      Material = "BlackSkyMat";
+      drawBottom = "0";
+      fogBandHeight = "0";
+   };
+   new Sun(theSun) {
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      azimuth = "230.396";
+      elevation = "45";
+      color = "0.968628 0.901961 0.901961 1";
+      ambient = "0.078431 0.113725 0.156863 1";
+      castShadows = true;
+      attenuationRatio = "0 1 1";
+      shadowType = "PSSM";
+      texSize = "1024";
+      overDarkFactor = "3000 1500 750 250";
+      shadowDistance = "200";
+      shadowSoftness = "0.25";
+      numSplits = "4";
+      logWeight = "0.9";
+      fadeStartDistance = "0";
+      lastSplitTerrainOnly = "0";
+      splitFadeDistances = "1 1 1 1";
+         bias = "0.1";
+         Blur = "1";
+         Enabled = "1";
+         height = "1024";
+         lightBleedFactor = "0.8";
+         minVariance = "0";
+         pointShadowType = "PointShadowType_Paraboloid";
+         shadowBox = "-100 -100 -100 100 100 100";
+         width = "3072";
+   };
+   new SimGroup(PlayerDropPoints) {
+      new SpawnSphere(Spawn_Mark) {
+         position = "0 0 2";
+         rotation = "1 0 0 0";
+         scale = "1 1 1";
+         dataBlock = "SpawnSphereMarker";
+         radius = "10";
+         spawnClass = "Player";
+         spawnDatablock = "OrcMageData";
+         sphereWeight = "1";
+         indoorWeight = "1";
+         outdoorWeight = "1";
+      };
+   };
+   new SimGroup(TeleportSpots) {
+     new SpawnSphere(:Spawn_Mark) {
+         position = "0 0 2";
+         rotation = "1 0 0 0";
+      };
+   };
+   new GroundPlane() {
+      canSaveDynamicFields = "1";
+      Position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      squareSize = "128";
+      scaleU = "12";
+      scaleV = "12";
+      Material = "BlankWhite";
+         Enabled = "1";
+   };
+};
+//--- OBJECT WRITE END ---
+

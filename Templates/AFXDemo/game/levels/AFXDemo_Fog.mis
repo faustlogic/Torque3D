@@ -1,0 +1,244 @@
+//--- OBJECT WRITE BEGIN ---
+new SimGroup(MissionGroup) {
+   new LevelInfo(theLevelInfo) {
+      LevelName = "Velvet Fog";
+      desc0 = "A murky mission with a polysoup station structure and dense fog.<br>" @
+              "<br>" @
+              "Dramatis Personae:<br>" @
+              "    1 patrolling orc<br>" @
+              "    2 orc guards<br>" @
+              "    1 orc corpse<br>" @
+              "<br>" @
+              "Spawns: 1  Teleports: 6";
+      visibleDistance = "1200";
+      fogColor = "0.29 0.27 0.305 1";
+      fogDensity = "0.05";
+      fogDensityOffset = "0";
+      fogAtmosphereHeight = "0";
+      canvasClearColor = "75 69 78 255";
+      isNightMission = false;
+      hasBrightLighting = true;
+      startupEffectsFunc = "";
+      gameType = AFXDemo;
+   };
+   new MissionArea(theMissionArea) {
+      Area = "-360 -648 720 1296";
+      flightCeiling = "300";
+      flightCeilingRange = "20";
+   };
+   new Sun(theSun) {
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      azimuth = "98";
+      elevation = "40";
+      color = "0.75 0.75 0.51 1";
+      ambient = "0.18 0.22 0.22 1";
+      brightness = "0.1";
+      castShadows = "1";
+      attenuationRatio = "0 1 1";
+      shadowType = "PSSM";
+      texSize = "1024";
+      overDarkFactor = "3000 1500 750 500";
+      shadowDistance = "500";
+      shadowSoftness = "0.4";
+      numSplits = "4";
+      logWeight = "0.9";
+      fadeStartDistance = "0";
+      lastSplitTerrainOnly = "0";
+      splitFadeDistances = "1 1 1 1";
+   };
+   new SimGroup(PlayerDropPoints) {
+      new SpawnSphere(Spawn_Mark) {
+         position = "-215.167 -119.225 185.78";
+         rotation = "-0.000146447 0.000143692 1 88.9118";
+         scale = "0.940827 1.97505 1";
+         dataBlock = "SpawnSphereMarker";
+         radius = "10";
+         spawnClass = "Player";
+         spawnDatablock = "OrcMageData";
+         sphereWeight = "1";
+         indoorWeight = "1";
+         outdoorWeight = "1";
+      };
+   };
+   new SimGroup(TeleportSpots) {
+     new SpawnSphere(:Spawn_Mark) {
+         position = "-215.167 -119.225 185.78";
+         rotation = "0 0 1 89";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-83.70 -1.96 154.49";
+         rotation = "0 0 1 216";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-79.31 64.6 168.26";
+         rotation = "0 0 -1 85";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-32.23 72.20 181.9";
+         rotation = "0 0 -1 92";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-42.10 71.81 203.4";
+         rotation = "0 0 1 220";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-93.70 -317.00 185.3";
+         rotation = "0 0 1 3";
+      };
+   };
+   new TerrainBlock(Terrain) {
+      position = "-1024 -1024 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      terrainFile = "art/terrains/uplands/AFXDemo_Uplands.ter";
+      squareSize = "8";
+      tile = "0";
+      baseTexSize = "2048";
+      screenError = "16";
+   };
+   new WaterPlane(theWater) {
+      position = "0 0 153.961";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      density = "1";
+      viscosity = "0.1";
+      liquidType = "Water";
+      baseColor = "25 116 30 255";
+      fresnelBias = "0.12";
+      fresnelPower = "6";
+      waveDir[0] = "0 1";
+      waveDir[1] = "0.707 0.707";
+      waveDir[2] = "0.5 0.86";
+      waveSpeed[0] = "1";
+      waveSpeed[1] = "1";
+      waveSpeed[2] = "1";
+      waveMagnitude[0] = "0.2";
+      waveMagnitude[1] = "0.2";
+      waveMagnitude[2] = "0.2";
+      rippleTex = "core/art/water/noise02";
+      rippleDir[0] = "0 1";
+      rippleDir[1] = "0.707 0.707";
+      rippleDir[2] = "0.5 0.86";
+      rippleSpeed[0] = "-0.065";
+      rippleSpeed[1] = "0.09";
+      rippleSpeed[2] = "0.04";
+      rippleTexScale[0] = "7.14 7.14";
+      rippleTexScale[1] = "6.25 12.5";
+      rippleTexScale[2] = "50 50";
+      fullReflect = "1";
+      reflectPriority = "1";
+      reflectMaxRateMs = "16";
+      reflectDetailAdjust = "1";
+      reflectNormalUp = "1";
+      useOcclusionQuery = "1";
+      waterFogDensity = "0.2";
+      waterFogDensityOffset = "1";
+      wetDepth = "2";
+      wetDarkening = "0.4";
+      foamTex = "art/water/foam";
+      foamScale = "1";
+      foamMaxDepth = "2";
+      foamColorModulate = "0.7 0.7 0.7";
+      distortStartDist = "0.1";
+      distortEndDist = "20";
+      distortFullDepth = "3.5";
+      clarity = "0.15";
+      underwaterColor = "0 0 0 0";
+      gridSize = "101";
+      gridElementSize = "1";
+   };
+   new TSStatic(PolysoupStation) {
+      position = "-63.6127 72.096 169.513";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      shapeName = "art/shapes/station/station01.dts";
+      useGradientRange = "0";
+      gradientRange = "0 180";
+      invertGradientRange = "0";
+      isInteriorLikeObject = true;
+      collisionType = "Visible Mesh";
+      decalType = "Visible Mesh";
+      allowPlayerStep = true;
+   };
+   new TSStatic(CampFire) {
+      position = "-6 16 166.45";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      shapeName = "art/shapes/campfires/campfire.dts";
+      isTerrainLikeObject = true;
+      collisionType = "Bounds";
+      decalType = "Visible Mesh";
+   };
+   new SimGroup(NPCPaths) {
+    new Path() {
+      firstWaypoint = 0;
+      traversal = "sequential";
+      isLooping = true;
+      npcName = "Orc On Patrol";
+      npcFlavor = "patrol";
+      npcHealth = 100;
+      npcWeapon = "crossbow";
+      new Marker(Path_Mark) {
+        position = "-226.313 -115.169 185.111";
+        rotation = "1 0 0 0";
+        scale = "1 1 1";
+        type = "Normal";
+        msToNext = "0";
+        smoothingType = "Spline";
+      };
+      new Marker(:Path_Mark) { position = "-229.457 -66.6559 185.02"; };
+      new Marker(:Path_Mark) { position = "-219.486 -30.8189 180.42"; };
+      new Marker(:Path_Mark) { position = "-217.95 16.2278 175.685"; };
+      new Marker(:Path_Mark) { position = "-222.901 75.2767 173.238"; };
+      new Marker(:Path_Mark) { position = "-176.664 98.7167 178.829"; };
+      new Marker(:Path_Mark) { position = "-134.421 104.865 172.931"; };
+      new Marker(:Path_Mark) { position = "-115.701 79.3998 170.985"; };
+      new Marker(:Path_Mark) { position = "-109.534 59.6884 169.508"; };
+      new Marker(:Path_Mark) { position = "-86.3 53.3626 168.987"; };
+      new Marker(:Path_Mark) { position = "-46.5917 58.9922 167.57"; };
+      new Marker(:Path_Mark) { position = "-31.6259 71.9516 169.53"; };
+      new Marker(:Path_Mark) { position = "-47.8461 87.0411 169.542"; };
+    };
+    new Path() {
+      firstWaypoint = 1;
+      traversal = "randomized";
+      isLooping = false;
+      npcName = "Orc on Guard";
+      npcHealth = 100;
+      npcFlavor = "guard";
+      npcWeapon = "crossbow";
+      new Marker(:Path_Mark) { position = "-226.313 -115.169 185.111"; };
+      new Marker(:Path_Mark) { position = "-258.235 -75.5955 179.961"; };
+      new Marker(:Path_Mark) { position = "-242.98 -33.7016 178.612"; };
+    };
+    new Path() {
+      firstWaypoint = 0;
+      traversal = "randomized";
+      isLooping = false;
+      npcName = "Orc on Wall";
+      npcHealth = 100;
+      npcFlavor = "guard";
+      npcWeapon = "crossbow";
+      new Marker(:Path_Mark) { 
+        position = "-77.33 70.3071 183.2"; 
+        rotation = "0 0 1 151";
+       };
+    };
+    new Path() {
+      firstWaypoint = 0;
+      traversal = "randomized";
+      isLooping = false;
+      npcName = "Dead Orc";
+      npcHealth = 0;
+      npcFlavor = "patrol";
+      npcWeapon = "crossbow";
+      new Marker(:Path_Mark) { position = "-226.313 -115.169 185.111"; };
+      new Marker(:Path_Mark) { position = "-258.235 -75.5955 179.961"; };
+      new Marker(:Path_Mark) { position = "-242.98 -33.7016 178.612"; };
+    };	  
+  };
+};
+//--- OBJECT WRITE END ---
+
