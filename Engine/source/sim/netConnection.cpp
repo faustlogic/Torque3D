@@ -316,7 +316,15 @@ void NetConnection::checkMaxRate()
    {
       packetRateToServer = 128;
       packetRateToClient = 128;
+      // AFX CODE BLOCK (workaround) <<
+      // These changes introduced in T3D 1.1 Preview reduce the packet headroom which leads
+      // to some spells and effects running out of room when dynamic variables are used
+      // to send launch-time parameters to clients.
+      packetSize = 512;
+      /* ORIGINAL CODE
       packetSize = 1024;
+      */
+      // AFX CODE BLOCK (workaround) >>
    }
 
    gPacketUpdateDelayToServer = 1024 / packetRateToServer;
