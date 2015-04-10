@@ -20,6 +20,14 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+// Arcane-FX for MIT Licensed Open Source version of Torque 3D from GarageGames
+// Copyright (C) 2015 Faust Logic, Inc.
+//
+//    Changes:
+//        datablock-id-size -- DataBlockObjectIdBitSize changed from 10 to 13.
+//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
+
 #ifndef _SIM_H_
 #define _SIM_H_
 
@@ -61,7 +69,17 @@ typedef U32 SimObjectId;
 enum SimObjectsConstants
 {
    DataBlockObjectIdFirst = 3,
+   // AFX CODE BLOCK (datablock-id-size) <<
+   // This change adds three bits to the datablock-id size, DataBlockObjectIdBitSize, 
+   // increasing the allowable datablock limit from 1023 to 8191. AFX tends to require
+   // a large number of datablocks and the spells implemented in the AFX demo exceeded
+   // the standard limit. Bumping this value to 11 or 13 is recommended for anyone
+   // using AFX for more than a few effects.
+   DataBlockObjectIdBitSize = 13,
+   /* ORIGINAL CODE
    DataBlockObjectIdBitSize = 10,
+   */
+   // AFX CODE BLOCK (datablock-id-size) >>
    DataBlockObjectIdLast = DataBlockObjectIdFirst + (1 << DataBlockObjectIdBitSize) - 1,
 
    MessageObjectIdFirst = DataBlockObjectIdLast + 1,
