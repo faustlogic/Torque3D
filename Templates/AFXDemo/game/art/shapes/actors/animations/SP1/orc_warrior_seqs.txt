@@ -1,0 +1,5 @@
+// Orc Warrior Sequences
+./player_diespin.dsq ctaf_dn
+./player_diechest.dsq ctaf_up
+./SP1/ow_mlf_hit.dsq mlf_hit
+

@@ -1,0 +1,4 @@
+// Orc Mage Sequences
+./CT/om_rm.dsq rm
+./CT/om_gbof.dsq gbof
+./CT/om_ap.dsq ap
