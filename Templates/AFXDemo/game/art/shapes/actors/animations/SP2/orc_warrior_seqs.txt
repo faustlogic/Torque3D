@@ -1,0 +1,12 @@
+// Orc Warrior Sequences
+./SP2/ow_bfb_hit.dsq bfb_hit
+./SP2/ow_bfb_hit2.dsq bfb_hit2
+./SP2/ow_uif_hit.dsq uif_hit
+./SP2/ow_byos.dsq  byos
+./SP2/ow_byos_run1.dsq byos_run1
+./SP2/ow_byos_run2.dsq byos_run2
+./SP2/ow_byos_run3.dsq byos_run3
+./SP2/ow_byos_jump.dsq byos_jump
+./SP2/ow_byos_land.dsq byos_land
+./SP2/ow_ssj_lock.dsq ssj_lock
+

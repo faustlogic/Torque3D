@@ -470,6 +470,12 @@ void GFXPCD3D9WindowTarget::resetMode()
       if ( pp.MultiSampleType != D3DMULTISAMPLE_NONE )      
          ppAntiAliaseLevel = pp.MultiSampleQuality + 1;
 
+      // AFX CODE BLOCK (hack) <<
+      // In some cases we need to force a video-mode reset even if the size or the fullscreen
+      // status has not changed.
+      extern bool AFX_forceVideoReset;
+      if (!AFX_forceVideoReset)
+      // AFX CODE BLOCK (hack) >>
       // Early out if none of the settings which require a device reset
       // have changed.      
       if ( backbufferSize == getSize() && 

@@ -1,0 +1,375 @@
+//--- OBJECT WRITE BEGIN ---
+new SimGroup(MissionGroup) {
+   new LevelInfo(theLevelInfo) {
+      levelName = "Dead of Night";
+      desc0 = "A moon lit night mission.<br>" @
+              "<br>" @
+              "Dramatis Personae:<br>" @
+              "    1 patrolling orc<br>" @
+              "    2 orc guards<br>" @
+              "    1 orc corpse<br>" @
+              "<br>" @
+              "Spawns: 1  Teleports: 6";
+      visibleDistance = "1200";
+      fogColor = "0.3 0.3 0.3 0";
+      fogDensity = "0";
+      fogDensityOffset = "10";
+      fogAtmosphereHeight = "340";
+      canvasClearColor = "13 48 4 255";
+      isNightMission = true;
+      hasBrightLighting = false;
+      startupEffectsFunc = "";
+      gameType = AFXDemo;
+   };
+   new MissionArea(theMissionArea) {
+      Area = "-360 -648 720 1296";
+      flightCeiling = "300";
+      flightCeilingRange = "20";
+   };
+   new SkyBox(theNightSky) {
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      Material = "AFX_NightSky_MTL";
+      drawBottom = "0";
+      fogBandHeight = "0.0";
+   };
+   new Sun(theMoon) {
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      azimuth = "264";
+      elevation = "16.5";
+      color = "0.35 0.19 0.0 1.0";
+      ambient = "0.18 0.12 0.2 1.0";
+      castShadows = true;
+      coronaEnabled = false;
+      attenuationRatio = "0 1 1";
+      shadowType = "PSSM";
+      texSize = "1024";
+      overDarkFactor = "3000 1500 750 500";
+      shadowDistance = "500";
+      shadowSoftness = "0.4";
+      numSplits = "4";
+      logWeight = "0.9";
+      fadeStartDistance = "0";
+      lastSplitTerrainOnly = "0";
+   };
+   new SimGroup(PlayerDropPoints) {
+      new SpawnSphere(Spawn_Mark) {
+         position = "-215.167 -119.225 185.78";
+         rotation = "-0.000146447 0.000143692 1 88.9118";
+         scale = "0.940827 1.97505 1";
+         dataBlock = "SpawnSphereMarker";
+         radius = "10";
+         spawnClass = "Player";
+         spawnDatablock = "OrcMageData";
+         sphereWeight = "1";
+         indoorWeight = "1";
+         outdoorWeight = "1";
+      };
+   };
+   new SimGroup(TeleportSpots) {
+     new SpawnSphere(:Spawn_Mark) {
+         position = "-215.167 -119.225 185.78";
+         rotation = "0 0 1 89";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-83.70 -1.96 154.49";
+         rotation = "0 0 1 216";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-79.31 64.6 168.26";
+         rotation = "0 0 -1 85";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-32.23 72.20 181.9";
+         rotation = "0 0 -1 92";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-42.10 71.81 203.4";
+         rotation = "0 0 1 220";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-93.70 -317.00 185.3";
+         rotation = "0 0 1 3";
+      };
+   };
+   new TerrainBlock(Terrain) {
+      position = "-1024 -1024 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      terrainFile = "art/terrains/uplands/AFXDemo_Uplands.ter";
+      squareSize = "8";
+      tile = "0";
+      baseTexSize = "2048";
+      screenError = "16";
+   };
+   /* DISABLED -- T3D 1.1 Final has some fxFoliageReplicator bugs
+   new SimGroup(grass) {
+      new fxFoliageReplicator(GrassyHillTop) {
+         position = "-94.5437 163.94 177.715";
+         rotation = "-0 -0 1 36.6693";
+         scale = "1 1 1";
+         UseDebugInfo = "0";
+         DebugBoxHeight = "1";
+         HideFoliage = "0";
+         ShowPlacementArea = "0";
+         PlacementAreaHeight = "2";
+         PlacementColour = "0.4 0 0.8 1";
+         seed = "1376312576";
+         FoliageFile = "art/shapes/groundCover/Grass.dds";
+         FoliageCount = "12333";
+         FoliageRetries = "100";
+         InnerRadiusX = "0";
+         InnerRadiusY = "0";
+         OuterRadiusX = "55";
+         OuterRadiusY = "55";
+         MinWidth = "1";
+         MaxWidth = "1";
+         MinHeight = "1";
+         MaxHeight = "1";
+         FixAspectRatio = "0";
+         FixSizeToMax = "0";
+         OffsetZ = "0";
+         RandomFlip = "1";
+         UseCulling = "0";
+         CullResolution = "20";
+         ViewDistance = "30";
+         ViewClosest = "1";
+         FadeInRegion = "30";
+         FadeOutRegion = "1";
+         AlphaCutoff = "0.2";
+         GroundAlpha = "0.2";
+         SwayOn = "1";
+         SwaySync = "0";
+         SwayMagSide = "0.1";
+         SwayMagFront = "0.2";
+         MinSwayTime = "3";
+         MaxSwayTime = "10";
+         LightOn = "1";
+         LightSync = "0";
+         MinLuminance = "0.7";
+         MaxLuminance = "1";
+         LightTime = "5";
+         AllowOnTerrain = "1";
+         AllowOnInteriors = "0";
+         AllowOnStatics = "0";
+         AllowOnWater = "0";
+         AllowWaterSurface = "0";
+         AllowedTerrainSlope = "45";
+	 AmbientModulationBias = "1.0";
+      };
+      new fxFoliageReplicator(GrassyHillTop2 : GrassyHillTop) {
+         position = "-251.477 -195.16 159.596";
+      };
+      new fxFoliageReplicator(SpawnerGrass : GrassyHillTop) {
+         position = "37.67 134.243 180.284";
+         rotation = "1 0 0 0";
+         seed = "1376312589";
+         FoliageCount = "7000";
+         OuterRadiusX = "23";
+         OuterRadiusY = "23";
+         FixAspectRatio = "1";
+         CullResolution = "12";
+      };
+      new fxFoliageReplicator(SpawnerGrass2 : SpawnerGrass) {
+         position = "-217.24 -75.8536 181.087";
+      };
+      new fxFoliageReplicator(SpawnerGrass3 : SpawnerGrass) {
+         position = "-104.45 -257.516 161.544";
+         rotation = "0 0 -1 46.4096";
+         CullResolution = "22";
+      };
+      new fxFoliageReplicator(SpawnerGrass4 : SpawnerGrass) {
+         position = "-201.854 80.0318 175.761";
+         rotation = "0 0 -1 46.4096";
+         FoliageCount = "9800";
+         OuterRadiusX = "55";
+         OuterRadiusY = "54";
+         CullResolution = "22";
+      };
+      new fxFoliageReplicator(SpawnerGrass5 : SpawnerGrass) {
+         position = "-254.139 -79.7184 176.912";
+         rotation = "0 0 -1 46.4096";
+         OuterRadiusX = "22";
+         OuterRadiusY = "22";
+         CullResolution = "22";
+      };
+      new fxFoliageReplicator(SpawnerGrass6 : SpawnerGrass) {
+         position = "-256.49 -29.8387 181.786";
+         rotation = "0 0 -1 46.4096";
+         OuterRadiusX = "22";
+         OuterRadiusY = "22";
+         OffsetZ = "-0.2";
+         CullResolution = "22";
+         AlphaCutoff = "0.1";
+         GroundAlpha = "0.1";
+      };
+   };
+   */
+   new WaterPlane(theWater) {
+      gridSize = "100";
+      gridElementSize = "1";
+      density = "0.1";
+      viscosity = "1";
+      liquidType = "Water";
+      baseColor = "25 116 30 255";
+      fresnelBias = "0.1";
+      fresnelPower = "1";
+      specularPower = "48";
+      specularColor = "0.44 0.64 0.8 1";
+      emissive = "0";
+      waveDir[0] = "0.3 0.3";
+      waveDir[1] = "1 0";
+      waveDir[2] = "-0.3 0.3";
+      waveSpeed[0] = "1";
+      waveSpeed[1] = "2";
+      waveSpeed[2] = "0.35";
+      waveMagnitude[0] = "0.5";
+      waveMagnitude[1] = "0.2";
+      waveMagnitude[2] = "0.1";
+      overallWaveMagnitude = "0.5";
+      rippleTex = "art/water/noise02.dds";
+      rippleDir[0] = "0 1";
+      rippleDir[1] = "0.707 0.707";
+      rippleDir[2] = "0.5 0.86";
+      rippleSpeed[0] = "-0.065";
+      rippleSpeed[1] = "0.06";
+      rippleSpeed[2] = "0.03";
+      rippleTexScale[0] = "7.14 7.14";
+      rippleTexScale[1] = "20 20";
+      rippleTexScale[2] = "100 100";
+      rippleMagnitude[0] = "1";
+      rippleMagnitude[1] = "1";
+      rippleMagnitude[2] = "0.3";
+      overallRippleMagnitude = "0.6";
+      foamTex = "art/water/wateredge512.dds";
+      foamDir[0] = "1 0";
+      foamDir[1] = "0 1";
+      foamSpeed[0] = "0.2";
+      foamSpeed[1] = "0.01";
+      foamTexScale[0] = "2 2";
+      foamTexScale[1] = "10 10";
+      foamOpacity[0] = "0";
+      foamOpacity[1] = "0";
+      overallFoamOpacity = "1.0";
+      foamMaxDepth = "8";
+      foamAmbientLerp = "1";
+      foamRippleInfluence = "0.05";
+      cubemap = "AFX_NightSky_Cubemap";
+      fullReflect = "1";
+      reflectivity = "0.7";
+      reflectPriority = "-1";
+      reflectMaxRateMs = "16";
+      reflectDetailAdjust = "0.5";
+      reflectNormalUp = "1";
+      useOcclusionQuery = "1";
+      reflectTexSize = "1024";
+      waterFogDensity = "0.1";
+      waterFogDensityOffset = "1";
+      wetDepth = "1";
+      wetDarkening = "0.1";
+      depthGradientTex = "art/water/depthcolor_ramp.png";
+      depthGradientMax = "50";
+      distortStartDist = "0.1";
+      distortEndDist = "20";
+      distortFullDepth = "3.5";
+      clarity = "1";
+      underwaterColor = "0 0 0 0";
+      soundAmbience = "UnderwaterAmbiance";
+      position = "0 0 154";
+   };
+   new TSStatic(PolysoupStation) {
+      position = "-63.6127 72.096 169.513";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      shapeName = "art/shapes/station/station01.dts";
+      useGradientRange = "0";
+      gradientRange = "0 180";
+      invertGradientRange = "0";
+      isInteriorLikeObject = true;
+      collisionType = "Visible Mesh";
+      decalType = "Visible Mesh";
+      allowPlayerStep = true;
+   };
+   new TSStatic(CampFire) {
+      position = "-6 16 166.45";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      shapeName = "art/shapes/campfires/campfire.dts";
+      isTerrainLikeObject = true;
+      collisionType = "Bounds";
+      decalType = "Visible Mesh";
+   };
+   new SimGroup(NPCPaths) {
+    new Path() {
+      firstWaypoint = 0;
+      traversal = "sequential";
+      isLooping = true;
+      npcName = "Orc On Patrol";
+      npcFlavor = "patrol";
+      npcHealth = 100;
+      npcWeapon = "crossbow";
+      new Marker(Path_Mark) {
+        position = "-226.313 -115.169 185.111";
+        rotation = "1 0 0 0";
+        scale = "1 1 1";
+        type = "Normal";
+        msToNext = "0";
+        smoothingType = "Spline";
+      };
+      new Marker(:Path_Mark) { position = "-229.457 -66.6559 185.02"; };
+      new Marker(:Path_Mark) { position = "-219.486 -30.8189 180.42"; };
+      new Marker(:Path_Mark) { position = "-217.95 16.2278 175.685"; };
+      new Marker(:Path_Mark) { position = "-222.901 75.2767 173.238"; };
+      new Marker(:Path_Mark) { position = "-176.664 98.7167 178.829"; };
+      new Marker(:Path_Mark) { position = "-134.421 104.865 172.931"; };
+      new Marker(:Path_Mark) { position = "-115.701 79.3998 170.985"; };
+      new Marker(:Path_Mark) { position = "-109.534 59.6884 169.508"; };
+      new Marker(:Path_Mark) { position = "-86.3 53.3626 168.987"; };
+      new Marker(:Path_Mark) { position = "-46.5917 58.9922 167.57"; };
+      new Marker(:Path_Mark) { position = "-31.6259 71.9516 169.53"; };
+      new Marker(:Path_Mark) { position = "-47.8461 87.0411 169.542"; };
+    };
+    new Path() {
+      firstWaypoint = 1;
+      traversal = "randomized";
+      isLooping = false;
+      npcName = "Orc on Guard";
+      npcHealth = 100;
+      npcFlavor = "guard";
+      npcWeapon = "crossbow";
+      new Marker(:Path_Mark) { position = "-226.313 -115.169 185.111"; };
+      new Marker(:Path_Mark) { position = "-258.235 -75.5955 179.961"; };
+      new Marker(:Path_Mark) { position = "-242.98 -33.7016 178.612"; };
+    };
+    new Path() {
+      firstWaypoint = 0;
+      traversal = "randomized";
+      isLooping = false;
+      npcName = "Orc on Wall";
+      npcHealth = 100;
+      npcFlavor = "guard";
+      npcWeapon = "crossbow";
+      new Marker(:Path_Mark) { 
+        position = "-77.33 70.3071 183.2"; 
+        rotation = "0 0 1 151";
+       };
+    };
+    new Path() {
+      firstWaypoint = 0;
+      traversal = "randomized";
+      isLooping = false;
+      npcName = "Dead Orc";
+      npcHealth = 0;
+      npcFlavor = "patrol";
+      npcWeapon = "crossbow";
+      new Marker(:Path_Mark) { position = "-226.313 -115.169 185.111"; };
+      new Marker(:Path_Mark) { position = "-258.235 -75.5955 179.961"; };
+      new Marker(:Path_Mark) { position = "-242.98 -33.7016 178.612"; };
+    };	  
+  };
+};
+//--- OBJECT WRITE END ---
+

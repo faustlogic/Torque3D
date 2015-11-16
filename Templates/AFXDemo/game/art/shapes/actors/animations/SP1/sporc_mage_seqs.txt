@@ -1,0 +1,11 @@
+// Orc Mage Sequences
+./player_diespin.dsq ctaf_dn
+./player_diechest.dsq ctaf_up
+./SP1/ow_mlf_hit.dsq mlf_hit
+./SP1/om_mlf.dsq mlf
+./SP1/om_sfm.dsq sfm
+./SP1/om_th.dsq th
+./SP1/om_aitm.dsq aitm
+./SP1/om_iop.dsq iop
+./SP1/om_ctaf.dsq ctaf
+./SP1/om_fb.dsq fb

@@ -89,6 +89,9 @@ RenderGlowMgr::RenderGlowMgr()
                                  Point2I( 512, 512 ) )
 {
    notifyType( RenderPassManager::RIT_Decal );
+   // AFX CODE BLOCK <<
+   notifyType( RenderPassManager::RIT_DecalAlt );
+   // AFX CODE BLOCK >>
    notifyType( RenderPassManager::RIT_Translucent );
    notifyType( RenderPassManager::RIT_Particle );
 

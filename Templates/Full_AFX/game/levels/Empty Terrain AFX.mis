@@ -1,0 +1,148 @@
+//--- OBJECT WRITE BEGIN ---
+new SimGroup(MissionGroup) {
+   canSave = "1";
+   canSaveDynamicFields = "1";
+      enabled = "1";
+
+   new LevelInfo(theLevelInfo) {
+      nearClip = "0.1";
+      visibleDistance = "2000";
+      decalBias = "0.0015";
+      fogColor = "1 1 0.6 1";
+      fogDensity = "0.001";
+      fogDensityOffset = "10";
+      fogAtmosphereHeight = "100";
+      canvasClearColor = "233 220 143 255";
+      ambientLightBlendPhase = "1";
+      ambientLightBlendCurve = "0 0 -1 -1";
+      advancedLightmapSupport = "0";
+      soundAmbience = "AudioAmbienceDefault";
+      soundDistanceModel = "Linear";
+      canSave = "1";
+      canSaveDynamicFields = "1";
+      hasBrightLighting = true;
+      desc0 = "An empty terrain ready to be populated with Torque objects.";
+      levelName = "Empty Terrain AFX";
+   };
+   new ScatterSky() {
+      skyBrightness = "30";
+      sunSize = "1";
+      colorizeAmount = "0";
+      colorize = "0 0 0 1";
+      rayleighScattering = "0.0035";
+      sunScale = "1 1 0.8 1";
+      ambientScale = "0.5 0.5 0.4 1";
+      fogScale = "1 1 1 1";
+      exposure = "0.85";
+      azimuth = "84";
+      elevation = "54";
+      moonAzimuth = "0";
+      moonElevation = "45";
+      castShadows = "1";
+      brightness = "1";
+      flareScale = "1";
+      nightColor = "0.0196078 0.0117647 0.109804 1";
+      nightFogColor = "0.0196078 0.0117647 0.109804 1";
+      moonEnabled = "1";
+      moonScale = "0.3";
+      moonLightColor = "0.192157 0.192157 0.192157 1";
+      useNightCubemap = "0";
+      attenuationRatio = "0 1 1";
+      shadowType = "PSSM";
+      texSize = "1024";
+      overDarkFactor = "3000 2000 1000 250";
+      shadowDistance = "400";
+      shadowSoftness = "0.25";
+      numSplits = "4";
+      logWeight = "0.96";
+      fadeStartDistance = "325";
+      lastSplitTerrainOnly = "0";
+      representedInLightmap = "0";
+      shadowDarkenColor = "0 0 0 -1";
+      includeLightmappedGeometryInShadow = "0";
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      canSave = "1";
+      canSaveDynamicFields = "1";
+         mieScattering = "0.0015";
+         moonTexture = "core/art/skies/night/moon_wglow";
+         moonTint = "0.192157 0.192157 0.192157 1";
+         sunBrightness = "50";
+   };
+   new TerrainBlock(theTerrain) {
+      terrainFile = "art/terrains/Empty Terrain_0.ter";
+      castShadows = "1";
+      squareSize = "2";
+      baseTexSize = "1024";
+      lightMapSize = "256";
+      screenError = "16";
+      ignoreZodiacs = "0";
+      position = "-1024 -1024 179.978";
+      rotation = "1 0 0 0";
+      canSave = "1";
+      canSaveDynamicFields = "1";
+         scale = "1 1 1";
+         tile = "0";
+   };
+   new SimGroup(PlayerDropPoints) {
+      canSave = "1";
+      canSaveDynamicFields = "1";
+         enabled = "1";
+
+      new SpawnSphere() {
+         autoSpawn = "1";
+         spawnTransform = "0";
+         radius = "1";
+         sphereWeight = "1";
+         indoorWeight = "1";
+         outdoorWeight = "1";
+         isAIControlled = "0";
+         dataBlock = "SpawnSphereMarker";
+         position = "0 0 241.772";
+         rotation = "1 0 0 0";
+         scale = "1 1 1";
+         canSave = "1";
+         canSaveDynamicFields = "1";
+            enabled = "1";
+            homingCount = "0";
+            lockCount = "0";
+      };
+   };
+   new SimGroup(NPCPaths) {
+      new Path() {
+         firstWaypoint = 0;
+         traversal = "randomized";
+         isLooping = true;
+         npcName = "Undead Orc";
+         npcHealth = 0;
+         npcFlavor = "patrol";
+         npcWeapon = "crossbow";
+         new Marker(Path_Mark) {
+            position = "0 -7.7 242";
+            rotation = "1 0 0 0";
+            scale = "1 1 1";
+            type = "Normal";
+            msToNext = "0";
+            smoothingType = "Spline";
+         };
+		 new Marker(:Path_Mark) { position = "11.7 0 242"; };
+		 new Marker(:Path_Mark) { position = "11.7 2 242"; };
+         new Marker(:Path_Mark) { position = "11.7 5 242"; };
+         new Marker(:Path_Mark) { position = "6.0 50.0 242"; };
+         new Marker(:Path_Mark) { position = "-7.77 37 242"; };
+         new Marker(:Path_Mark) { position = "-39 14.8 242"; };
+      };
+   };
+   new AITurretShape() {
+      name = "Turret Mage";
+      respawn = "0";
+      isAIControlled = "1";
+      dataBlock = "DeployableTurret_AFX";
+      position = "-13.8449 15.3998 237.399";
+      rotation = "0 0 -1 37.4688";
+      invAITurretAmmo = "10000";
+      invAITurretHead = "1";
+   };
+};
+//--- OBJECT WRITE END ---

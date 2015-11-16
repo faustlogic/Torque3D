@@ -160,6 +160,9 @@ inline BaseMatInstance* RenderBinManager::getMaterial( RenderInst *inst ) const
 {
    if (  inst->type == RenderPassManager::RIT_Mesh || 
          inst->type == RenderPassManager::RIT_Decal ||
+         // AFX CODE BLOCK <<
+         inst->type == RenderPassManager::RIT_DecalAlt ||
+         // AFX CODE BLOCK >>
          inst->type == RenderPassManager::RIT_Translucent )
       return static_cast<MeshRenderInst*>(inst)->matInst;
 

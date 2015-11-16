@@ -1,0 +1,18 @@
+// Orc Mage Sequences
+./SP2/ow_bfb_hit.dsq bfb_hit
+./SP2/ow_bfb_hit2.dsq bfb_hit2
+./SP2/ow_uif_hit.dsq uif_hit
+./SP2/ow_byos.dsq  byos
+./SP2/ow_byos_run1.dsq byos_run1
+./SP2/ow_byos_run2.dsq byos_run2
+./SP2/ow_byos_run3.dsq byos_run3
+./SP2/ow_byos_jump.dsq byos_jump
+./SP2/ow_byos_land.dsq byos_land
+./SP2/ow_ssj_lock.dsq ssj_lock
+./SP2/om_ck.dsq ck
+./SP2/om_fst.dsq fst
+./SP2/om_mok.dsq mok
+./SP2/om_rof.dsq rof
+./SP2/om_ssj.dsq ssj
+./SP2/om_ssj_hold.dsq ssj_hold
+./SP2/om_ssj_grab.dsq ssj_grab

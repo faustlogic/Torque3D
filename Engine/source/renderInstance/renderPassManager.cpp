@@ -51,6 +51,9 @@ const RenderInstType RenderPassManager::RIT_Terrain("Terrain");
 const RenderInstType RenderPassManager::RIT_Object("Object");      
 const RenderInstType RenderPassManager::RIT_ObjectTranslucent("ObjectTranslucent");
 const RenderInstType RenderPassManager::RIT_Decal("Decal");
+// AFX CODE BLOCK <<
+const RenderInstType RenderPassManager::RIT_DecalAlt("DecalAlt");
+// AFX CODE BLOCK >>
 const RenderInstType RenderPassManager::RIT_Water("Water");
 const RenderInstType RenderPassManager::RIT_Foliage("Foliage");
 const RenderInstType RenderPassManager::RIT_Translucent("Translucent");

@@ -1,0 +1,287 @@
+//--- OBJECT WRITE BEGIN ---
+new SimGroup(MissionGroup) {
+   new LevelInfo(theLevelInfo) {
+      levelName = "Orc Army Bivouac";
+      desc0 = "A lightweight daytime level with lots of orcs running around.<br>" @
+              "<br>" @
+              "Dramatis Personae:<br>" @
+              "    13 patrolling orcs<br>" @
+              "<br>" @
+              "Spawns: 1  Teleports: 10";
+      nearClip = "0.1";
+      visibleDistance = "1000";
+      decalBias = "0.0015";
+      fogColor = "0.4 0.4 0.4 1";
+      fogDensity = "0.02";
+      fogDensityOffset = "400";
+      fogAtmosphereHeight = "0";
+      canvasClearColor = "13 48 4 255";
+      isNightMission = false;
+      hasBrightLighting = true;
+      startupEffectsFunc = "";
+      gameType = AFXDemo;
+   };
+   new MissionArea(theMissionArea) {
+      area = "-152 -352 1040 1056";
+      flightCeiling = "300";
+      flightCeilingRange = "20";
+   };
+   new SkyBox(theSky) {
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      Material = "AFX_DaySky_MTL";
+      drawBottom = "0";
+      fogBandHeight = "0.8";
+   };
+   new Sun(theSun) {
+      position = "0 0 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      azimuth = "45";
+      elevation = "35";
+      color = "1 0.97 0.86 1";
+      ambient = "0.18 0.18 0.2 1";
+      brightness = "1";
+      castShadows = true;
+      coronaEnabled = true;
+      coronaMaterial = "Corona_Mat";
+      coronaScale = "0.18";
+      coronaTint = "1 1 1 1";
+      coronaUseLightColor = "1";
+      flareType = "SunFlareExample3";
+      flareScale = "1.5";
+      attenuationRatio = "0 1 1";
+      shadowType = "PSSM";
+      texSize = "1024";
+      overDarkFactor = "3000 1500 750 500";
+      shadowDistance = "250";
+      shadowSoftness = "0.4";
+      numSplits = "4";
+      logWeight = "0.9";
+      fadeStartDistance = "0";
+      lastSplitTerrainOnly = "0";
+      representedInLightmap = "0";
+      shadowDarkenColor = "0 0 0 -1";
+      includeLightmappedGeometryInShadow = "0";
+   };
+   new TerrainBlock(Terrain) {
+      position = "-1024 -1024 0";
+      rotation = "1 0 0 0";
+      scale = "1 1 1";
+      terrainFile = "art/terrains/classic/AFXDemo_Classic.ter";
+      squareSize = "8";
+      tile = "1";
+      baseTexSize = "2048";
+      screenError = "16";
+   };
+   new SimGroup(PlayerDropPoints) {
+      new SpawnSphere(Spawn_Mark) {
+         position = "430 310 218.6";
+         rotation = "0 0 -1 87.6625";
+         scale = "1 1 1";
+         dataBlock = "SpawnSphereMarker";
+         radius = "1";
+         spawnClass = "Player";
+         spawnDatablock = "OrcMageData";
+         sphereWeight = "100";
+         indoorWeight = "100";
+         outdoorWeight = "100";
+      };
+   };
+   new SimGroup(TeleportSpots) {
+     new SpawnSphere(:Spawn_Mark) {
+         position = "430 310 218.6";
+         rotation = "0 0 -1 87.6625";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "402 331 219.832";
+         rotation = "0 0 -1 87.6625";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "333 339 218.849";
+         rotation = "0 0 1 154.699";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "356 246 202.064";
+         rotation = "0 0 1 16.0429";
+      };
+
+      new SpawnSphere(:Spawn_Mark) {
+         position = "574.0 155.0 268.876";
+         rotation = "0 0 -1 50.0039";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "215 169.5 226.176";
+         rotation = "0 0 1 41.8259";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "33 -17.8 277.821";
+         rotation = "0 0 1 44.6907";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "-39 -415 245.829";
+         rotation = "0 0 1 40.1071";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "504 439.5 270.826";
+         rotation = "0 0 1 225.355";
+      };
+      new SpawnSphere(:Spawn_Mark) {
+         position = "406.5 528 233.048";
+         rotation = "0 0 1 179.336";
+      };
+   };
+   new SimGroup(Campfires) {
+      new TSStatic(CampFire) {
+         position = "360.173 309.959 217.714";
+         rotation = "1 0 0 0.573347";
+         scale = "1 1 1";
+         shapeName = "art/shapes/campfires/campfire.dts";
+         isTerrainLikeObject = true;
+         collisionType = "Bounds";
+         decalType = "Visible Mesh";
+      };
+   };
+   new SimGroup(NPCPaths) {
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Grolhed";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(Path_Mark) {
+            position = "420 340 220";
+            rotation = "1 0 0 0";
+            scale = "1 1 1";
+            type = "Normal";
+            msToNext = "0";
+            smoothingType = "Spline";
+         };
+        new Marker(:Path_Mark) { position = "420 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Bar Pishnak";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "416 340 220"; };
+        new Marker(:Path_Mark) { position = "416 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "At gro-Olzog";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "412 340 220"; };
+        new Marker(:Path_Mark) { position = "412 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Gridush";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "408 340 220"; };
+        new Marker(:Path_Mark) { position = "408 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Etnarud";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "404 340 220"; };
+        new Marker(:Path_Mark) { position = "404 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Agycap";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "400 340 220"; };
+        new Marker(:Path_Mark) { position = "400 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Nagnus";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "396 340 220"; };
+        new Marker(:Path_Mark) { position = "396 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Rool";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "392 340 220"; };
+        new Marker(:Path_Mark) { position = "392 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Gul gra-Lo";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "388 340 220"; };
+        new Marker(:Path_Mark) { position = "388 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Guurz";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "384 340 220"; };
+        new Marker(:Path_Mark) { position = "384 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Orrowx";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "380 340 220"; };
+        new Marker(:Path_Mark) { position = "380 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Uhsezegl";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "376 340 220"; };
+        new Marker(:Path_Mark) { position = "376 305 220"; };
+      };
+      new Path() {
+        firstWaypoint = "random";
+        npcName = "Arx";
+        npcFlavor = "patrol";
+        npcHealth = 100;
+        npcWeapon = "crossbow";
+        npcSpeedBias = 0.8 + getRandomF(0.0, 0.4);
+        new Marker(:Path_Mark) { position = "372 340 220"; };
+        new Marker(:Path_Mark) { position = "372 305 220"; };
+      };
+   };
+};
+//--- OBJECT WRITE END ---
+

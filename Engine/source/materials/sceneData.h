@@ -52,6 +52,12 @@ struct SceneData
       /// The prepass render bin.
       /// @RenderPrePassMgr
       PrePassBin,
+
+      // AFX CODE BLOCK (selection-highlight) <<
+      /// The selection-highlight render bin.  
+      /// @afxRenderHighlightMgr  
+      HighlightBin,
+      // AFX CODE BLOCK (selection-highlight) >>
    };
 
    /// This defines when we're rendering a special bin 
