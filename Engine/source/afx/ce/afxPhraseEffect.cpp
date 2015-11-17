@@ -271,7 +271,7 @@ bool afxPhraseEffectData::preload(bool server, String &errorStr)
     {
       for (S32 i = 0; i < fx_list.size(); i++)
       {
-        SimObjectId db_id = (SimObjectId) fx_list[i];
+        SimObjectId db_id = SimObjectId((uintptr_t)fx_list[i]);
         if (db_id != 0)
         {
           // try to convert id to pointer

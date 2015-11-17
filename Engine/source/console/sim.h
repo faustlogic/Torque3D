@@ -20,14 +20,6 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
-// Arcane-FX for MIT Licensed Open Source version of Torque 3D from GarageGames
-// Copyright (C) 2015 Faust Logic, Inc.
-//
-//    Changes:
-//        datablock-id-size -- DataBlockObjectIdBitSize changed from 10 to 13.
-//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
-
 #ifndef _SIM_H_
 #define _SIM_H_
 
@@ -39,6 +31,9 @@
 #endif
 #ifndef _MODULE_H_
 #include "core/module.h"
+#endif
+#ifndef _CONSOLE_H_
+#include "console/console.h"
 #endif
 
 // Forward Refs
@@ -69,17 +64,7 @@ typedef U32 SimObjectId;
 enum SimObjectsConstants
 {
    DataBlockObjectIdFirst = 3,
-   // AFX CODE BLOCK (datablock-id-size) <<
-   // This change adds three bits to the datablock-id size, DataBlockObjectIdBitSize, 
-   // increasing the allowable datablock limit from 1023 to 8191. AFX tends to require
-   // a large number of datablocks and the spells implemented in the AFX demo exceeded
-   // the standard limit. Bumping this value to 11 or 13 is recommended for anyone
-   // using AFX for more than a few effects.
-   DataBlockObjectIdBitSize = 13,
-   /* ORIGINAL CODE
-   DataBlockObjectIdBitSize = 10,
-   */
-   // AFX CODE BLOCK (datablock-id-size) >>
+   DataBlockObjectIdBitSize = 14,
    DataBlockObjectIdLast = DataBlockObjectIdFirst + (1 << DataBlockObjectIdBitSize) - 1,
 
    MessageObjectIdFirst = DataBlockObjectIdLast + 1,
@@ -140,9 +125,15 @@ namespace Sim
    SimDataBlockGroup *getDataBlockGroup();
    SimGroup* getRootGroup();
 
+   SimObject* findObject(ConsoleValueRef&);
    SimObject* findObject(SimObjectId);
    SimObject* findObject(const char* name);
    SimObject* findObject(const char* fileName, S32 declarationLine);
+   template<class T> inline bool findObject(ConsoleValueRef &ref,T*&t)
+   {
+      t = dynamic_cast<T*>(findObject(ref));
+      return t != NULL;
+   }
    template<class T> inline bool findObject(SimObjectId iD,T*&t)
    {
       t = dynamic_cast<T*>(findObject(iD));
@@ -166,13 +157,13 @@ namespace Sim
    SimTime getTargetTime();
 
    /// a target time of 0 on an event means current event
-   U32 postEvent(SimObject*, SimEvent*, U32 targetTime);
+   U32 postEvent(SimObject*, SimEvent*, SimTime targetTime);
 
-   inline U32 postEvent(SimObjectId iD,SimEvent*evt, U32 targetTime)
+   inline U32 postEvent(SimObjectId iD,SimEvent*evt, SimTime targetTime)
    {
       return postEvent(findObject(iD), evt, targetTime);
    }
-   inline U32 postEvent(const char *objectName,SimEvent*evt, U32 targetTime)
+   inline U32 postEvent(const char *objectName,SimEvent*evt, SimTime targetTime)
    {
       return postEvent(findObject(objectName), evt, targetTime);
    }

@@ -33,7 +33,7 @@
 #endif
 
 #define AFX_VERSION_STRING "2.0"
-#define AFX_VERSION         2.0 
+#define AFX_VERSION         2.0
 
 // #define AFX_CUSTOMIZED_BRANCH
 
@@ -59,6 +59,10 @@
 
 #ifndef _CONSOLETYPES_H_
 #include "console/consoleTypes.h"
+#endif
+
+#ifndef _ENGINEAPI_H_
+#include "console/engineAPI.h"
 #endif
 
 #ifndef _SIMBASE_H_
@@ -163,11 +167,11 @@ class ByteRange
 public:
   U8     low;
   U8     high;
-  
+
 public:
   /*C*/  ByteRange() { low = 0; high = 255; }
   /*C*/  ByteRange(U8 l, U8 h=255) { low = l; high = h; }
-  
+
   void   set(U8 l, U8 h=255) { low = l; high = h; }
   bool   outOfRange(U8 v) { return (v < low || v > high); }
   bool   inRange(U8 v) { return !outOfRange(v); }
@@ -182,13 +186,13 @@ DefineConsoleType(TypeByteRange2, ByteRange)
 inline void writeDatablockID(BitStream* s, SimObject* simobj, bool packed=false)
 {
   if (s->writeFlag(simobj))
-    s->writeRangedU32(packed ? SimObjectId(simobj) : simobj->getId(), 
+    s->writeRangedU32(packed ? SimObjectId((uintptr_t)simobj) : simobj->getId(),
                       DataBlockObjectIdFirst, DataBlockObjectIdLast);
 }
 
 inline S32 readDatablockID(BitStream* s)
 {
-  return (!s->readFlag()) ? 0 : ((S32)s->readRangedU32(DataBlockObjectIdFirst, 
+  return (!s->readFlag()) ? 0 : ((S32)s->readRangedU32(DataBlockObjectIdFirst,
           DataBlockObjectIdLast));
 }
 

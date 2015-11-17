@@ -125,9 +125,9 @@ void afxGuiTextHud::onRender( Point2I, const RectI &updateRect)
    cam.getColumn(3, &camPos);
    cam.getColumn(1, &camDir);
 
-   F32 camFov;
-   conn->getControlCameraFov(&camFov);
-   camFov = mDegToRad(camFov) / 2;
+   F32 camFovCos;
+   conn->getControlCameraFov(&camFovCos);
+   camFovCos = mCos(mDegToRad(camFovCos) / 2);
 
    // Visible distance info & name fading
    F32 visDistance = gClientSceneGraph->getVisibleDistance();
@@ -190,7 +190,7 @@ void afxGuiTextHud::onRender( Point2I, const RectI &updateRect)
            // projection and box test.
            shapeDir.normalize();
            F32 dot = mDot(shapeDir, camDir);
-           if (dot < camFov)
+           if (dot < camFovCos)
              continue;
 
            // Test to see if it's behind something, and we want to
@@ -244,7 +244,7 @@ void afxGuiTextHud::onRender( Point2I, const RectI &updateRect)
        // projection and box test.
        shapeDir.normalize();
        F32 dot = mDot(shapeDir, camDir);
-       if (dot < camFov)
+       if (dot < camFovCos)
          continue;
 
        // Test to see if it's behind something, and we want to

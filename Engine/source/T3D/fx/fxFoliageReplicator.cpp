@@ -259,7 +259,7 @@ fxFoliageCulledList::fxFoliageCulledList(Box3F SearchBox, fxFoliageCulledList* I
 
 //------------------------------------------------------------------------------
 
-void fxFoliageCulledList::FindCandidates(Box3F SearchBox, fxFoliageCulledList* InVec)
+void fxFoliageCulledList::FindCandidates(const Box3F& SearchBox, fxFoliageCulledList* InVec)
 {
    // Search the Culled List.
    for (U32 i = 0; i < InVec->GetListCount(); i++)
@@ -1045,7 +1045,7 @@ void fxFoliageReplicator::SetupBuffers()
 
 //------------------------------------------------------------------------------
 
-Box3F fxFoliageReplicator::FetchQuadrant(Box3F Box, U32 Quadrant)
+Box3F fxFoliageReplicator::FetchQuadrant(const Box3F& Box, U32 Quadrant)
 {
    Box3F QuadrantBox;
 

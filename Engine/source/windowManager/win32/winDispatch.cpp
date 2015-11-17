@@ -39,6 +39,8 @@
 #include "core/util/journal/process.h"
 #include "core/util/journal/journaledSignal.h"
 
+#if !defined( TORQUE_SDL )
+
 static U32 _ModifierKeys=0;
 static BYTE keyboardState[256];
 static bool initKBState = false;
@@ -135,14 +137,14 @@ static void _keyboardEvent(Win32Window* window,UINT message, WPARAM wParam, WPAR
        && window->getKeyboardTranslation()
 	    && !window->shouldNotTranslate( torqueMods, newVirtKey ) )
 	{
-      U16 chars[ 64 ];
+      wchar_t chars[ 64 ];
       dMemset( chars, 0, sizeof( chars ) );
 
       S32 res = ToUnicode( keyCode, scanCode, keyboardState, chars, sizeof( chars ) / sizeof( chars[ 0 ] ), 0 );
 
    	// This should only happen on Window 9x/ME systems
    	if( res == 0 )
-   		res = ToAscii( keyCode, scanCode, keyboardState, chars, 0 );
+         res = ToAscii( keyCode, scanCode, keyboardState, (LPWORD)chars, 0 );
 
       if( res >= 1 )
       {
@@ -450,7 +452,7 @@ static bool _dispatch(HWND hWnd,UINT message,WPARAM wParam,WPARAM lParam)
 		// Quit indicates that we're not going to receive anymore Win32 messages.
 		// Therefore, it's appropriate to flag our event loop for exit as well,
 		// since we won't be getting any more messages.
-		Process::requestShutdown();
+		Process::requestShutdown((S32)wParam);
 		break;
 				  }
 
@@ -591,3 +593,6 @@ void DispatchRemove(HWND hWnd)
 {
 	_MessageQueue.remove(hWnd);
 }
+
+
+#endif

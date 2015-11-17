@@ -83,20 +83,20 @@ bool afxSpellBookData::preload(bool server, String &errorStr)
     return false;
 
   // Resolve objects transmitted from server
-  if (!server) 
+  if (!server)
   {
     if (do_id_convert)
     {
       for (S32 i = 0; i < pages_per_book*spells_per_page; i++)
       {
-        SimObjectId db_id = (SimObjectId) rpg_spells[i];
+        SimObjectId db_id = SimObjectId((uintptr_t)rpg_spells[i]);
         if (db_id != 0)
         {
           // try to convert id to pointer
           if (!Sim::findObject(db_id, rpg_spells[i]))
           {
-            Con::errorf(ConsoleLogEntry::General, 
-              "afxSpellBookData::preload() -- bad datablockId: 0x%x (afxRPGMagicSpellData)", 
+            Con::errorf(ConsoleLogEntry::General,
+              "afxSpellBookData::preload() -- bad datablockId: 0x%x (afxRPGMagicSpellData)",
               db_id);
           }
         }
@@ -213,7 +213,7 @@ bool afxSpellBook::onNewDataBlock(GameBaseData* dptr, bool reload)
 
 bool afxSpellBook::onAdd()
 {
-	if (!Parent::onAdd()) 
+	if (!Parent::onAdd())
     return(false);
 
 	return(true);
@@ -265,7 +265,7 @@ char* afxSpellBook::formatDesc(char* buffer, int len, S32 page, S32 slot) const
   S32 idx = mDataBlock->getPageSlotIndex(page, slot);
   if (idx < 0 || !mDataBlock->rpg_spells[idx])
     return SPELL_DATA_NOT_FOUND;
-  
+
   return mDataBlock->rpg_spells[idx]->formatDesc(buffer, len);
 }
 
@@ -274,7 +274,7 @@ const char* afxSpellBook::getSpellIcon(S32 page, S32 slot) const
   S32 idx = mDataBlock->getPageSlotIndex(page, slot);
   if (idx < 0 || !mDataBlock->rpg_spells[idx])
     return 0;
-  
+
   return mDataBlock->rpg_spells[idx]->icon_name;
 }
 
@@ -283,7 +283,7 @@ bool afxSpellBook::isPlaceholder(S32 page, S32 slot) const
   S32 idx = mDataBlock->getPageSlotIndex(page, slot);
   if (idx < 0 || !mDataBlock->rpg_spells[idx])
     return false;
-  
+
   return mDataBlock->rpg_spells[idx]->is_placeholder;
 }
 

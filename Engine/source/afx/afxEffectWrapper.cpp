@@ -623,7 +623,7 @@ bool afxEffectWrapperData::preload(bool server, String &errorStr)
     {
       for (int i = 0; i < MAX_XFM_MODIFIERS; i++)
       {
-        SimObjectId db_id = (SimObjectId)xfm_modifiers[i];
+        SimObjectId db_id = SimObjectId((uintptr_t)xfm_modifiers[i]);
         if (db_id != 0)
         {
           // try to convert id to pointer

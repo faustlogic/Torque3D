@@ -310,8 +310,8 @@ void NetConnection::eventReadPacket(BitStream *bstream)
          setLastError("Invalid packet. (bad event class id)");
          return;
       }
-      NetEvent *evt = (NetEvent *) ConsoleObject::create(getNetClassGroup(), NetClassTypeEvent, classId);
-      if(!evt)
+      StrongRefPtr<NetEvent> evt = (NetEvent *) ConsoleObject::create(getNetClassGroup(), NetClassTypeEvent, classId);
+      if(evt.isNull())
       {
          setLastError("Invalid packet. (bad ghost class id)");
          return;
@@ -344,13 +344,7 @@ void NetConnection::eventReadPacket(BitStream *bstream)
       if(unguaranteedPhase)
       {
          evt->process(this);
-         // AFX CODE BLOCK (bug-fix) <<
-         // for events that are not GuaranteedOrdered we can get here w/o ever
-         // incrementing ref-count on the event.
-         if (evt->getRefCount() == 0)
-            evt->incRef();
-         // AFX CODE BLOCK (bug-fix) >>
-         evt->decRef();
+         evt = NULL;
          if(mErrorBuffer.isNotEmpty())
             return;
          continue;

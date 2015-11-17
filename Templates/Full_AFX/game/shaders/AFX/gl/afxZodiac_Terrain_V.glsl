@@ -8,18 +8,23 @@
 // Copyright (C) Faust Logic, Inc.
 //~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
 
+#include "../../common/gl/hlslCompat.glsl"
+
 uniform mat4 modelview;
 
-varying vec2 texCoord;
-varying vec4 color0;
-varying vec4 position;
+out vec2 texCoord;
+
+in vec4 vPosition;
+in vec4 vColor;
+in vec2 vTexCoord0;
 
 //~~~~~~~~~~~~~~~~~~~~//
 
 void main()
 {
-   texCoord = gl_MultiTexCoord0.st;
-   gl_Position = modelview * gl_Vertex;
+   texCoord = vTexCoord0.st;
+   gl_Position = modelview * vPosition;
+   correctSSP(gl_Position);
 }
 
 //~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//

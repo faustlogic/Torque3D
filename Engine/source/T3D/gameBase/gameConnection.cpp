@@ -248,6 +248,8 @@ GameConnection::GameConnection()
 
    mAIControlled = false;
 
+   mLastPacketTime = 0;
+
    mDisconnectReason[0] = 0;
 
    //blackout vars
@@ -266,11 +268,14 @@ GameConnection::GameConnection()
    mAddYawToAbsRot = false;
    mAddPitchToAbsRot = false;
 
+   mVisibleGhostDistance = 0.0f;
+
    clearDisplayDevice();
 }
 
 GameConnection::~GameConnection()
 {
+   setDisplayDevice(NULL);
    delete mAuthInfo;
    for(U32 i = 0; i < mConnectArgc; i++)
       dFree(mConnectArgv[i]);
@@ -283,6 +288,16 @@ GameConnection::~GameConnection()
 }
 
 //----------------------------------------------------------------------------
+
+void GameConnection::setVisibleGhostDistance(F32 dist)
+{
+   mVisibleGhostDistance = dist;
+}
+
+F32 GameConnection::getVisibleGhostDistance()
+{
+   return mVisibleGhostDistance;
+}
 
 bool GameConnection::canRemoteCreate()
 {
@@ -325,7 +340,8 @@ ConsoleMethod(GameConnection, setConnectArgs, void, 3, 17,
    
    "@see GameConnection::onConnect()\n\n")
 {
-   object->setConnectArgs(argc - 2, argv + 2);
+   StringStackWrapper args(argc - 2, argv + 2);
+   object->setConnectArgs(args.count(), args);
 }
 
 void GameConnection::onTimedOut()
@@ -367,6 +383,7 @@ void GameConnection::onConnectionEstablished(bool isInitiator)
 
       const char *argv[MaxConnectArgs + 2];
       argv[0] = "onConnect";
+      argv[1] = NULL; // Filled in later
       for(U32 i = 0; i < mConnectArgc; i++)
          argv[i + 2] = mConnectArgv[i];
       // NOTE: Need to fallback to Con::execute() as IMPLEMENT_CALLBACK does not 
@@ -486,7 +503,15 @@ bool GameConnection::readConnectRequest(BitStream *stream, const char **errorStr
       *errorString = "CR_INVALID_ARGS";
       return false;
    }
-   const char *connectArgv[MaxConnectArgs + 3];
+   ConsoleValueRef connectArgv[MaxConnectArgs + 3];
+   ConsoleValue connectArgvValue[MaxConnectArgs + 3];
+
+   for(U32 i = 0; i < mConnectArgc+3; i++)
+   {
+	   connectArgv[i].value = &connectArgvValue[i];
+	   connectArgvValue[i].init();
+   }
+
    for(U32 i = 0; i < mConnectArgc; i++)
    {
       char argString[256];
@@ -494,10 +519,11 @@ bool GameConnection::readConnectRequest(BitStream *stream, const char **errorStr
       mConnectArgv[i] = dStrdup(argString);
       connectArgv[i + 3] = mConnectArgv[i];
    }
-   connectArgv[0] = "onConnectRequest";
+   connectArgvValue[0].setStackStringValue("onConnectRequest");
+   connectArgvValue[1].setIntValue(0);
    char buffer[256];
    Net::addressToString(getNetAddress(), buffer);
-   connectArgv[2] = buffer;
+   connectArgvValue[2].setStackStringValue(buffer);
 
    // NOTE: Cannot convert over to IMPLEMENT_CALLBACK as it has variable args.
    const char *ret = Con::execute(this, mConnectArgc + 3, connectArgv);
@@ -691,6 +717,30 @@ bool GameConnection::getControlCameraTransform(F32 dt, MatrixF* mat)
    }
    return true;
 }
+
+bool GameConnection::getControlCameraEyeTransforms(IDisplayDevice *display, MatrixF *transforms)
+{
+   GameBase* obj = getCameraObject();
+   if(!obj)
+      return false;
+
+   GameBase* cObj = obj;
+   while((cObj = cObj->getControlObject()) != 0)
+   {
+      if(cObj->useObjsEyePoint())
+         obj = cObj;
+   }
+
+   // Perform operation on left & right eyes. For each we need to calculate the world space 
+   // of the rotated eye offset and add that onto the camera world space.
+   for (U32 i=0; i<2; i++)
+   {
+      obj->getEyeCameraTransform(display, i, &transforms[i]);
+   }
+
+   return true;
+}
+
 
 bool GameConnection::getControlCameraDefaultFov(F32 * fov)
 {
@@ -1018,8 +1068,10 @@ bool GameConnection::readDemoStartBlock(BitStream *stream)
 
 void GameConnection::demoPlaybackComplete()
 {
-   static const char *demoPlaybackArgv[1] = { "demoPlaybackComplete" };
-   Sim::postCurrentEvent(Sim::getRootGroup(), new SimConsoleEvent(1, demoPlaybackArgv, false));
+   static const char* demoPlaybackArgv[1] = { "demoPlaybackComplete" };
+   static StringStackConsoleWrapper demoPlaybackCmd(1, demoPlaybackArgv);
+
+   Sim::postCurrentEvent(Sim::getRootGroup(), new SimConsoleEvent(demoPlaybackCmd.argc, demoPlaybackCmd.argv, false));
    Parent::demoPlaybackComplete();
 }
 
@@ -2304,6 +2356,24 @@ DefineEngineMethod( GameConnection, getControlSchemeAbsoluteRotation, bool, (),,
    "@see GameConnection::setControlSchemeParameters()\n\n")
 {
    return object->getControlSchemeAbsoluteRotation();
+}
+
+DefineEngineMethod( GameConnection, setVisibleGhostDistance, void, (F32 dist),,
+   "@brief Sets the distance that objects around it will be ghosted. If set to 0, "
+   "it may be defined by the LevelInfo.\n\n"
+   "@dist - is the max distance\n\n"
+   )
+{
+   object->setVisibleGhostDistance(dist);
+}
+
+DefineEngineMethod( GameConnection, getVisibleGhostDistance, F32, (),,
+   "@brief Gets the distance that objects around the connection will be ghosted.\n\n"
+   
+   "@return S32 of distance.\n\n"
+   )
+{
+   return object->getVisibleGhostDistance();
 }
 
 // AFX CODE BLOCK (obj-select) <<

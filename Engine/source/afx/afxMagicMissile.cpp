@@ -322,6 +322,11 @@ afxMagicMissileData* afxMagicMissileData::cloneAndPerformSubstitutions(const Sim
 
 #define myOffset(field) Offset(field, afxMagicMissileData)
 
+FRangeValidator muzzleVelocityValidator(0, 10000);
+FRangeValidator missilePrecisionValidator(0.f, 100.f);
+FRangeValidator missileTrackDelayValidator(0, 100000);
+FRangeValidator missileBallisticCoefficientValidator(0, 1);
+
 void afxMagicMissileData::initPersistFields()
 {
    static IRangeValidatorScaled ticksFromMS(TickMs, 0, MaxLifetimeTicks);
@@ -350,7 +355,7 @@ void afxMagicMissileData::initPersistFields()
    /* From stock Projectile code...
    addField("velInheritFactor", TypeF32, Offset(velInheritFactor, ProjectileData));
    */
-   addNamedFieldV(muzzleVelocity,    TypeF32,      afxMagicMissileData,  new FRangeValidator(0, 10000));
+   addNamedFieldV(muzzleVelocity,    TypeF32,      afxMagicMissileData,  &muzzleVelocityValidator);
    /* From stock Projectile code...
    addField("impactForce", TypeF32, Offset(impactForce, ProjectileData));
    */
@@ -375,9 +380,9 @@ void afxMagicMissileData::initPersistFields()
    addField("startingVelocityVector",TypePoint3F,  myOffset(starting_vel_vec));
 
    addNamedField(isGuided,               TypeBool,   afxMagicMissileData);
-   addNamedFieldV(precision,             TypeF32,    afxMagicMissileData,  new FRangeValidator(0, 100)); 
-   addNamedFieldV(trackDelay,            TypeS32,    afxMagicMissileData,  new FRangeValidator(0, 100000)); 
-   addNamedFieldV(ballisticCoefficient,  TypeF32,    afxMagicMissileData,  new FRangeValidator(0, 1));
+   addNamedFieldV(precision,             TypeF32,    afxMagicMissileData,  &missilePrecisionValidator); 
+   addNamedFieldV(trackDelay,            TypeS32,    afxMagicMissileData,  &missileTrackDelayValidator); 
+   addNamedFieldV(ballisticCoefficient,  TypeF32,    afxMagicMissileData,  &missileBallisticCoefficientValidator);
 
    addField("collisionMask",         TypeS32,      myOffset(collision_mask));
 

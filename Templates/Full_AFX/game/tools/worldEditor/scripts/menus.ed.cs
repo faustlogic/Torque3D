@@ -112,8 +112,7 @@ function EditorGui::buildMenus(%this)
       barTitle = "File";
    };
    
-   if(!isWebDemo())
-   {
+
       %fileMenu.appendItem("New Level" TAB "" TAB "schedule( 1, 0, \"EditorNewLevel\" );");
       %fileMenu.appendItem("Open Level..." TAB %cmdCtrl SPC "O" TAB "schedule( 1, 0, \"EditorOpenMission\" );");
       %fileMenu.appendItem("Save Level" TAB %cmdCtrl SPC "S" TAB "EditorSaveMissionMenu();");
@@ -126,13 +125,10 @@ function EditorGui::buildMenus(%this)
          %fileMenu.appendItem( "Open Level File in Torsion" TAB "" TAB "EditorOpenFileInTorsion();" );
          %fileMenu.appendItem( "-" );
       }
-   }
    
    %fileMenu.appendItem("Create Blank Terrain" TAB "" TAB "Canvas.pushDialog( CreateNewTerrainGui );");        
    %fileMenu.appendItem("Import Terrain Heightmap" TAB "" TAB "Canvas.pushDialog( TerrainImportGui );");
    
-   if(!isWebDemo())
-   {
       %fileMenu.appendItem("Export Terrain Heightmap" TAB "" TAB "Canvas.pushDialog( TerrainExportGui );");
       %fileMenu.appendItem("-");
       %fileMenu.appendItem("Export To COLLADA..." TAB "" TAB "EditorExportToCollada();");
@@ -140,7 +136,6 @@ function EditorGui::buildMenus(%this)
          //item[6] = "Import Texture Data..." TAB "" TAB "Texture::import();";
          //item[7] = "-";
          //item[8] = "Export Terraform Data..." TAB "" TAB "Heightfield::saveBitmap(\"\");";
-   }
    
    %fileMenu.appendItem( "-" );
    %fileMenu.appendItem( "Add FMOD Designer Audio..." TAB "" TAB "AddFMODProjectDlg.show();" );
@@ -148,11 +143,9 @@ function EditorGui::buildMenus(%this)
    %fileMenu.appendItem("-");
    %fileMenu.appendItem("Play Level" TAB "F11" TAB "Editor.close(\"PlayGui\");");
       
-   if(!isWebDemo())
-   {
       %fileMenu.appendItem("Exit Level" TAB "" TAB "EditorExitMission();");
       %fileMenu.appendItem("Quit" TAB %quitShortcut TAB "EditorQuitGame();");
-   }
+
    %this.menuBar.insert(%fileMenu, %this.menuBar.getCount());
    
    // Edit Menu

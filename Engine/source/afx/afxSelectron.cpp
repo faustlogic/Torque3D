@@ -36,7 +36,7 @@
 // afxSelectronData::ewValidator
 //
 // When an effect is added using "addEffect", this validator intercepts the value
-// and adds it to the dynamic effects list. 
+// and adds it to the dynamic effects list.
 //
 void afxSelectronData::ewValidator::validateType(SimObject* object, void* typePtr)
 {
@@ -66,8 +66,8 @@ void afxSelectronData::ewValidator::validateType(SimObject* object, void* typePt
 class SelectronFinishStartupEvent : public SimEvent
 {
 public:
-  void process(SimObject* obj) 
-  { 
+  void process(SimObject* obj)
+  {
      afxSelectron* selectron = dynamic_cast<afxSelectron*>(obj);
      if (selectron)
        selectron->finish_startup();
@@ -170,7 +170,7 @@ void afxSelectronData::initPersistFields()
     "...");
 
   // effect lists
-  // for each of these, dummy_fx_entry is set and then a validator adds it to the appropriate effects list 
+  // for each of these, dummy_fx_entry is set and then a validator adds it to the appropriate effects list
   addFieldV("addMainEffect",      TYPEID<afxEffectBaseData>(),  myOffset(dummy_fx_entry),  &_mainPhrase,
     "...");
   addFieldV("addSelectEffect",    TYPEID<afxEffectBaseData>(),  myOffset(dummy_fx_entry),  &_selectPhrase,
@@ -198,7 +198,7 @@ bool afxSelectronData::onAdd()
 {
   if (Parent::onAdd() == false)
     return false;
-    
+
   return true;
 }
 
@@ -258,14 +258,14 @@ inline void expand_fx_list(afxEffectList& fx_list, const char* tag)
 {
   for (S32 i = 0; i < fx_list.size(); i++)
   {
-    SimObjectId db_id = (SimObjectId)fx_list[i];
+    SimObjectId db_id = SimObjectId((uintptr_t)fx_list[i]);
     if (db_id != 0)
     {
       // try to convert id to pointer
       if (!Sim::findObject(db_id, fx_list[i]))
       {
-        Con::errorf(ConsoleLogEntry::General, 
-          "afxSelectronData::preload() -- bad datablockId: 0x%x (%s)", 
+        Con::errorf(ConsoleLogEntry::General,
+          "afxSelectronData::preload() -- bad datablockId: 0x%x (%s)",
           db_id, tag);
       }
     }
@@ -278,7 +278,7 @@ bool afxSelectronData::preload(bool server, String &errorStr)
     return false;
 
   // Resolve objects transmitted from server
-  if (!server) 
+  if (!server)
   {
     if (do_id_convert)
     {
@@ -459,7 +459,7 @@ void afxSelectron::onRemove()
 U32 afxSelectron::packUpdate(NetConnection* conn, U32 mask, BitStream* stream)
 {
   U32 retMask = Parent::packUpdate(conn, mask, stream);
-  
+
   // InitialUpdate
   if (stream->writeFlag(mask & InitialUpdateMask))
   {
@@ -485,7 +485,7 @@ U32 afxSelectron::packUpdate(NetConnection* conn, U32 mask, BitStream* stream)
   {
     pack_constraint_info(conn, stream);
   }
-  
+
   return retMask;
 }
 
@@ -494,7 +494,7 @@ U32 afxSelectron::packUpdate(NetConnection* conn, U32 mask, BitStream* stream)
 void afxSelectron::unpackUpdate(NetConnection * conn, BitStream * stream)
 {
   Parent::unpackUpdate(conn, stream);
-  
+
   bool initial_update = false;
   bool zoned_in = true;
   bool do_sync_event = false;
@@ -504,7 +504,7 @@ void afxSelectron::unpackUpdate(NetConnection * conn, BitStream * stream)
 
   // InitialUpdate Only
   if (stream->readFlag())
-  {    
+  {
     initial_update = true;
 
     stream->read(&time_factor);
@@ -608,7 +608,7 @@ void afxSelectron::setup_main_fx()
   phrases[MAIN_PHRASE] = new afxPhrase(isServerObject(), true);
 
   if (phrases[MAIN_PHRASE])
-    phrases[MAIN_PHRASE]->init(datablock->main_fx_list, datablock->main_dur, this, time_factor, 
+    phrases[MAIN_PHRASE]->init(datablock->main_fx_list, datablock->main_dur, this, time_factor,
                                datablock->n_main_loops);
 }
 
@@ -685,7 +685,7 @@ void afxSelectron::process_server()
 }
 
 void afxSelectron::change_state_s(U8 pending_state)
-{ 
+{
   if (effect_state == pending_state)
     return;
 
@@ -721,7 +721,7 @@ void afxSelectron::change_state_s(U8 pending_state)
 }
 
 void afxSelectron::enter_done_state_s()
-{ 
+{
   postEvent(DEACTIVATE_EVENT);
 
   F32 done_time = effect_elapsed;
@@ -751,7 +751,7 @@ void afxSelectron::enter_done_state_s()
 }
 
 void afxSelectron::enter_active_state_s()
-{ 
+{
   // stamp constraint-mgr starting time
   constraint_mgr->setStartTime(Platform::getVirtualMilliseconds());
   effect_elapsed = 0;
@@ -769,13 +769,13 @@ void afxSelectron::enter_active_state_s()
 }
 
 void afxSelectron::leave_active_state_s()
-{ 
+{
   if (phrases[MAIN_PHRASE])
     phrases[MAIN_PHRASE]->stop(effect_elapsed);
 }
 
 void afxSelectron::enter_cleanup_state_s()
-{ 
+{
   // start deselect effects
   setup_deselect_fx();
   if (phrases[SELECT_PHRASE])
@@ -863,7 +863,7 @@ void afxSelectron::process_client(F32 dt)
 }
 
 void afxSelectron::change_state_c(U8 pending_state)
-{ 
+{
   if (effect_state == pending_state)
     return;
 
@@ -899,7 +899,7 @@ void afxSelectron::change_state_c(U8 pending_state)
 }
 
 void afxSelectron::enter_active_state_c(F32 starttime)
-{ 
+{
   // stamp constraint-mgr starting time
   constraint_mgr->setStartTime(Platform::getVirtualMilliseconds() - (U32)(effect_elapsed*1000));
   ///effect_elapsed = 0;
@@ -916,7 +916,7 @@ void afxSelectron::enter_active_state_c(F32 starttime)
 }
 
 void afxSelectron::leave_active_state_c()
-{ 
+{
   if (phrases[MAIN_PHRASE])
   {
     //if (marks_mask & MARK_INTERRUPT)
@@ -927,7 +927,7 @@ void afxSelectron::leave_active_state_c()
 }
 
 void afxSelectron::enter_cleanup_state_c()
-{ 
+{
   if (!client_only)
     return;
 
@@ -940,7 +940,7 @@ void afxSelectron::enter_cleanup_state_c()
 }
 
 void afxSelectron::enter_done_state_c()
-{ 
+{
   if (!client_only)
     return;
 
@@ -974,7 +974,7 @@ void afxSelectron::enter_done_state_c()
 
 void afxSelectron::sync_client(U16 marks, U8 state, F32 elapsed)
 {
-  //Con::printf("SYNC marks=%d old_state=%d state=%d elapsed=%g", 
+  //Con::printf("SYNC marks=%d old_state=%d state=%d elapsed=%g",
   //            marks, effect_state, state, elapsed);
 
   if (effect_state != LATE_STATE)
@@ -1007,10 +1007,10 @@ void afxSelectron::sync_client(U16 marks, U8 state, F32 elapsed)
 //~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~~//
 // public:
 
-void afxSelectron::postEvent(U8 event) 
-{ 
+void afxSelectron::postEvent(U8 event)
+{
   setMaskBits(StateEventMask);
-  
+
   switch (event)
   {
   case ACTIVATE_EVENT:
@@ -1037,8 +1037,8 @@ void afxSelectron::finish_startup()
 }
 
 // static
-afxSelectron* 
-afxSelectron::start_selectron(SceneObject* picked, U8 subcode, SimObject* extra) 
+afxSelectron*
+afxSelectron::start_selectron(SceneObject* picked, U8 subcode, SimObject* extra)
 {
   U32 picked_type = (picked) ? picked->getTypeMask() : 0;
 
@@ -1068,8 +1068,8 @@ afxSelectron::start_selectron(SceneObject* picked, U8 subcode, SimObject* extra)
   }
 
   // CALL SCRIPT afxSelectronData::onPreactivate(%params, %extra)
-  const char* result = Con::executef(datablock, "onPreactivate", 
-                                     Con::getIntArg(param_holder->getId()), 
+  const char* result = Con::executef(datablock, "onPreactivate",
+                                     Con::getIntArg(param_holder->getId()),
                                      (extra) ? Con::getIntArg(extra->getId()) : "");
   if (result && result[0] != '\0' && !dAtob(result))
   {
@@ -1110,10 +1110,10 @@ afxSelectron::start_selectron(SceneObject* picked, U8 subcode, SimObject* extra)
   return selectron;
 }
 
-void afxSelectron::activate() 
+void afxSelectron::activate()
 {
   // separating the final part of startup allows the calling script
-  // to make certain types of calls on the returned effectron that  
+  // to make certain types of calls on the returned effectron that
   // need to happen prior to constraint initialization.
   Sim::postEvent(this, new SelectronFinishStartupEvent, Sim::getCurrentTime());
 

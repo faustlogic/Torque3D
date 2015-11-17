@@ -98,13 +98,13 @@ void afxT3DLightBaseData::initPersistFields()
    // are injected at runtime by the lighting system itself.
 
    addGroup( "Light" );
-      
+
       addField( "isEnabled", TypeBool, Offset( mIsEnabled, afxT3DLightBaseData ),
         "Enables/Disables the object rendering and functionality in the scene.");
       addField( "color", TypeColorF, Offset( mColor, afxT3DLightBaseData ),
         "Changes the base color hue of the light.");
       addField( "brightness", TypeF32, Offset( mBrightness, afxT3DLightBaseData ),
-        "Adjusts the lights power, 0 being off completely.");      
+        "Adjusts the lights power, 0 being off completely.");
       addField( "castShadows", TypeBool, Offset( mCastShadows, afxT3DLightBaseData ),
         "Enables/disables shadow casts by this light.");
       addField( "priority", TypeF32, Offset( mPriority, afxT3DLightBaseData ),
@@ -163,7 +163,7 @@ void afxT3DLightBaseData::packData(BitStream* stream)
 
   // note: BitStream's overloaded write() for ColorF will convert
   // to ColorI for transfer and then back to ColorF. This is fine
-  // for most color usage but for lighting colors we want to preserve 
+  // for most color usage but for lighting colors we want to preserve
   // "pushed" color values which may be greater than 1.0 so the color
   // is instead sent as individual color primaries.
   stream->write( mColor.red );
@@ -189,7 +189,7 @@ void afxT3DLightBaseData::unpackData(BitStream* stream)
   stream->read( &mColor.blue );
   mColor.alpha = 1.0f;
 
-  stream->read( &mBrightness );      
+  stream->read( &mBrightness );
   mCastShadows = stream->readFlag();
   stream->read( &mAnimState.animationPeriod );
   stream->read( &mAnimState.animationPhase );
@@ -207,11 +207,11 @@ bool afxT3DLightBaseData::preload(bool server, String &errorStr)
     return false;
 
   // Resolve objects transmitted from server
-  if (!server) 
+  if (!server)
   {
     if (do_id_convert)
     {
-      SimObjectId anim_id = (SimObjectId)mAnimationData;
+      SimObjectId anim_id = SimObjectId((uintptr_t)mAnimationData);
       if (anim_id != 0)
       {
         // try to convert id to pointer
@@ -222,7 +222,7 @@ bool afxT3DLightBaseData::preload(bool server, String &errorStr)
             anim_id);
         }
       }
-      SimObjectId flare_id = (SimObjectId)mFlareData;
+      SimObjectId flare_id = SimObjectId((uintptr_t)mFlareData);
       if (flare_id != 0)
       {
         // try to convert id to pointer

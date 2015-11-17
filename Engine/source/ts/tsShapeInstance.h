@@ -680,6 +680,11 @@ protected:
 
    void prepCollision();
 
+//-------------------------------------------------------------------------------------
+// accumulation
+//-------------------------------------------------------------------------------------
+
+   bool hasAccumulation();
    // AFX CODE BLOCK (triggers) <<
    // provides access to full mTriggerStates mask.
    U32 getTriggerStateMask() const { return mTriggerStates; }

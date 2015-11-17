@@ -67,20 +67,20 @@ class ClientZoneInEvent : public NetEvent
 public:
   ClientZoneInEvent() { mGuaranteeType = Guaranteed; }
   ~ClientZoneInEvent() { }
-  
+
   virtual void pack(NetConnection*, BitStream*bstream) { }
   virtual void write(NetConnection*, BitStream *bstream) { }
   virtual void unpack(NetConnection* /*ps*/, BitStream *bstream) { }
 
   virtual void process(NetConnection* conn)
-  { 
+  {
     GameConnection* game_conn = dynamic_cast<GameConnection*>(conn);
     if (game_conn && !game_conn->isZonedIn())
     {
       arcaneFX::syncToNewConnection(game_conn);
     }
   }
-  
+
   DECLARE_CONOBJECT(ClientZoneInEvent);
   DECLARE_CATEGORY("AFX");
 };
@@ -283,7 +283,7 @@ U32 arcaneFX::registerChoreographer(afxChoreographer* ch)
   active_choreographers.push_back(ch);
 
   //Con::printf("registerChoreographer() -- size=%d %s", active_choreographers.size(),
-  //  (ch->isServerObject()) ? "server" : "client"); 
+  //  (ch->isServerObject()) ? "server" : "client");
 
   return master_choreographer_id++;
 }
@@ -292,7 +292,7 @@ void arcaneFX::unregisterChoreographer(afxChoreographer* ch)
 {
   if (!ch)
     return;
-  
+
   for (U32 i = 0; i < active_choreographers.size(); i++)
   {
     if (ch == active_choreographers[i])
@@ -303,7 +303,7 @@ void arcaneFX::unregisterChoreographer(afxChoreographer* ch)
       return;
     }
   }
-  
+
   Con::errorf("arcaneFX::unregisterChoreographer() -- failed to find choreographer in list.");
 }
 
@@ -319,7 +319,7 @@ void arcaneFX::unregisterClientChoreographer(afxChoreographer* ch)
 {
   if (!ch || ch->getChoreographerId() == 0)
     return;
-  
+
   for (U32 i = 0; i < client_choreographers.size(); i++)
   {
     if (ch == client_choreographers[i])
@@ -328,7 +328,7 @@ void arcaneFX::unregisterClientChoreographer(afxChoreographer* ch)
       return;
     }
   }
-  
+
   Con::errorf("arcaneFX::unregisterClientChoreographer() -- failed to find choreographer in list.");
 }
 
@@ -406,7 +406,7 @@ SceneObject* arcaneFX::findScopedObject(U16 scope_id)
         return scoped_objs[i];
   }
   return 0;
-} 
+}
 
 void arcaneFX::unregisterScopedObject(SceneObject* object)
 {
@@ -465,10 +465,10 @@ S32 arcaneFX::rolloverRayCast(Point3F start, Point3F end, U32 mask)
 #else
   GameConnection* conn = GameConnection::getConnectionToServer();
   SceneObject* ctrl_obj = NULL;
-  
+
   if (!arcaneFX::sClickToTargetSelf && conn != NULL)
     ctrl_obj = conn->getControlObject();
-  
+
   if (ctrl_obj)
     ctrl_obj->disableCollision();
 
@@ -499,7 +499,7 @@ S32 arcaneFX::rolloverRayCast(Point3F start, Point3F end, U32 mask)
 }
 
 bool arcaneFX::freeTargetingRayCast(Point3F start, Point3F end, U32 mask)
-{    
+{
   sIsFreeTargeting = true;
 
   RayInfo hit_info;
@@ -682,9 +682,9 @@ DefineEngineFunction(touchDataBlocks, void, (),,
 {
   if (mark_modkey < 0)
     return;
-  
+
   SimDataBlockGroup* g = Sim::getDataBlockGroup();
-  
+
   U32 groupCount = g->size();
   for (S32 i = groupCount-1; i >= 0; i--)
   {
@@ -695,12 +695,12 @@ DefineEngineFunction(touchDataBlocks, void, (),,
       simdb->registerObject();
     }
   }
-  
+
   mark_modkey = -1;
 }
 
 //~~~~~~~~~~~~~~~~~~~~//~~~~~~~~~~~~~~~~~~~~//
-// Syntax Error Checking 
+// Syntax Error Checking
 // (for checking eval() and compile() calls)
 
 DefineEngineFunction(wasSyntaxError, bool, (),,
@@ -742,7 +742,7 @@ DefineEngineMethod(NetConnection, ResolveGhost, S32, (int ghostIndex),,
       pObject = object->resolveObjectFromGhostIndex(ghostIndex);
     if (pObject)
       return pObject->getId();
-  } 
+  }
   return 0;
 }
 
@@ -756,8 +756,8 @@ IMPLEMENT_STRUCT( ByteRange, ByteRange,,
    "" )
 END_IMPLEMENT_STRUCT;
 
-ConsoleType( ByteRange, TypeByteRange, ByteRange )
-ConsoleType( ByteRange, TypeByteRange2, ByteRange )
+ConsoleType( ByteRange, TypeByteRange, ByteRange)
+ConsoleType( ByteRange, TypeByteRange2, ByteRange)
 
 ConsoleGetType( TypeByteRange )
 {
@@ -810,7 +810,7 @@ static void HSVtoRGB(F32 h, F32 s, F32 v, F32& r, F32& g, F32& b)
   h = mFmod(h, 360.0f);
 
   if (v == 0.0f)
-    r = g = b = 0.0f; 
+    r = g = b = 0.0f;
   else if (s == 0.0f)
     r = g = b = v;
   else
@@ -858,7 +858,7 @@ DefineEngineFunction(getColorFromHSV, const char*, (float hue, float sat, float 
                      "@param alpha The alpha of the color (0-1).\n"
                      "@ingroup AFX")
 {
-  ColorF rgb; 
+  ColorF rgb;
   HSVtoRGB(hue, sat, val, rgb.red, rgb.green, rgb.blue);
   rgb.alpha = alpha;
 
@@ -896,7 +896,7 @@ DefineEngineFunction(getMaxF, F32, (float a, float b),,
    return getMax(a, b);
 }
 
-ConsoleFunction(echoThru, const char*, 2, 0, "(string passthru, string text...)" 
+ConsoleFunction(echoThru, const char*, 2, 0, "(string passthru, string text...)"
                 "Like echo(), but first argument is returned.\n"
                 "@ingroup AFX")
 {
@@ -910,13 +910,13 @@ ConsoleFunction(echoThru, const char*, 2, 0, "(string passthru, string text...)"
    for(i = 2; i < argc; i++)
       dStrcat(ret, argv[i]);
 
-   Con::printf("%s -- [%s]", ret, argv[1]);
+   Con::printf("%s -- [%s]", ret, argv[1].getStringValue());
    ret[0] = 0;
 
    return argv[1];
 }
 
-ConsoleFunction(warnThru, const char*, 2, 0, "(string passthru, string text...)" 
+ConsoleFunction(warnThru, const char*, 2, 0, "(string passthru, string text...)"
                 "Like warn(), but first argument is returned.\n"
                 "@ingroup AFX")
 {
@@ -930,13 +930,13 @@ ConsoleFunction(warnThru, const char*, 2, 0, "(string passthru, string text...)"
    for(i = 2; i < argc; i++)
       dStrcat(ret, argv[i]);
 
-   Con::warnf("%s -- [%s]", ret, argv[1]);
+   Con::warnf("%s -- [%s]", ret, argv[1].getStringValue());
    ret[0] = 0;
 
    return argv[1];
 }
 
-ConsoleFunction(errorThru, const char*, 2, 0, "(string passthru, string text...)" 
+ConsoleFunction(errorThru, const char*, 2, 0, "(string passthru, string text...)"
                 "Like error(), but first argument is returned.\n"
                 "@ingroup AFX")
 {
@@ -950,7 +950,7 @@ ConsoleFunction(errorThru, const char*, 2, 0, "(string passthru, string text...)
    for(i = 2; i < argc; i++)
       dStrcat(ret, argv[i]);
 
-   Con::errorf("%s -- [%s]", ret, argv[1]);
+   Con::errorf("%s -- [%s]", ret, argv[1].getStringValue());
    ret[0] = 0;
 
    return argv[1];

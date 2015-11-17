@@ -369,6 +369,7 @@ struct MeshRenderInst : public RenderInst
    GFXTextureObject *backBuffTex;
    GFXTextureObject *reflectTex;
    GFXTextureObject *miscTex;
+   GFXTextureObject *accuTex;
    GFXCubemap   *cubemap;
 
    void clear();
@@ -394,6 +395,8 @@ struct ParticleRenderInst : public RenderInst
 
    /// The total particle count to render.
    S32 count;
+
+   bool glow;
 
    /// The combined model, camera, and projection transform.
    const MatrixF *modelViewProj;       

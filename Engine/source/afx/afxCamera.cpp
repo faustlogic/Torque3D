@@ -502,7 +502,7 @@ ConsoleMethod(afxCamera, setCameraSubject, bool, 3, 3, "")
   SceneObject* subject;
   if (!Sim::findObject(argv[2], subject))
   {
-    Con::errorf("Camera subject \"%s\" not found.", argv[2]);
+    Con::errorf("Camera subject \"%s\" not found.", argv[2].getStringValue());
     return false;
   }
   

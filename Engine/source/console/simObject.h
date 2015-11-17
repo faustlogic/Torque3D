@@ -423,7 +423,7 @@ class SimObject: public ConsoleObject
       virtual void _onUnselected() {}
    
       /// We can provide more detail, like object name and id.
-      virtual String _getLogMessage(const char* fmt, void* args) const;
+      virtual String _getLogMessage(const char* fmt, va_list args) const;
    
       DEFINE_CREATE_METHOD
       {
@@ -552,7 +552,7 @@ class SimObject: public ConsoleObject
       
       virtual ~SimObject();
 
-      virtual bool processArguments(S32 argc, const char **argv);  ///< Process constructor options. (ie, new SimObject(1,2,3))
+      virtual bool processArguments(S32 argc, ConsoleValueRef *argv);  ///< Process constructor options. (ie, new SimObject(1,2,3))
 
       /// @}
 
