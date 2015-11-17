@@ -28,8 +28,6 @@ $Pref::WorldEditor::FileSpec = "Torque Mission Files (*.mis)|*.mis|All Files (*.
 
 function EditorFileMenu::onMenuSelect(%this)
 {
-   // don't do this since it won't exist if this is a "demo"
-   if(!isWebDemo())
       %this.enableItem(2, EditorIsDirty());
 }
 
@@ -88,7 +86,7 @@ function EditorClearDirty()
 
 function EditorQuitGame()
 {
-   if( EditorIsDirty() && !isWebDemo())
+   if( EditorIsDirty())
    {
       MessageBoxYesNoCancel("Level Modified", "Would you like to save your changes before quitting?", "EditorSaveMissionMenu(); quit();", "quit();", "" );
    }
@@ -98,7 +96,7 @@ function EditorQuitGame()
 
 function EditorExitMission()
 {  
-   if( EditorIsDirty() && !isWebDemo() )
+   if( EditorIsDirty())
    {
       MessageBoxYesNoCancel("Level Modified", "Would you like to save your changes before exiting?", "EditorDoExitMission(true);", "EditorDoExitMission(false);", "");
    }
@@ -108,7 +106,7 @@ function EditorExitMission()
 
 function EditorDoExitMission(%saveFirst)
 {
-   if(%saveFirst && !isWebDemo())
+   if(%saveFirst)
    {
       EditorSaveMissionMenu();
    }
@@ -202,9 +200,6 @@ function EditorOpenDeclarationInTorsion( %object )
 
 function EditorNewLevel( %file )
 {
-   if(isWebDemo())
-      return;
-      
    %saveFirst = false;
    if ( EditorIsDirty() )
    {
@@ -241,27 +236,15 @@ function EditorNewLevel( %file )
 
 function EditorSaveMissionMenu()
 {
-   if(!$Pref::disableSaving && !isWebDemo())
-   {
       if(EditorGui.saveAs)
          EditorSaveMissionAs();
       else
          EditorSaveMission();
    }
-   else
-   {
-      EditorSaveMissionMenuDisableSave();
-   }
-}
 
 function EditorSaveMission()
 {
    // just save the mission without renaming it
-   if(isFunction("getObjectLimit") && MissionGroup.getFullCount() >= getObjectLimit())
-   {
-      MessageBoxOKBuy( "Object Limit Reached", "You have exceeded the object limit of " @ getObjectLimit() @ " for this demo. You can remove objects if you would like to add more.", "", "Canvas.showPurchaseScreen(\"objectlimit\");" );
-      return;
-   }
    
    // first check for dirty and read-only files:
    if((EWorldEditor.isDirty || ETerrainEditor.isMissionDirty) && !isWriteableFileName($Server::MissionFile))
@@ -316,23 +299,8 @@ function EditorSaveMission()
    return true;
 }
 
-function EditorSaveMissionMenuDisableSave()
-{
-   GenericPromptDialog-->GenericPromptWindow.text = "Warning";
-   GenericPromptDialog-->GenericPromptText.setText("Saving disabled in demo mode."); 
-   Canvas.pushDialog( GenericPromptDialog ); 
-}
-
 function EditorSaveMissionAs( %missionName )
 {
-   if(isFunction("getObjectLimit") && MissionGroup.getFullCount() >= getObjectLimit())
-   {
-      MessageBoxOKBuy( "Object Limit Reached", "You have exceeded the object limit of " @ getObjectLimit() @ " for this demo. You can remove objects if you would like to add more.", "", "Canvas.showPurchaseScreen(\"objectlimit\");" );
-      return;
-   }
-   
-   if(!$Pref::disableSaving && !isWebDemo())
-   {
       // If we didn't get passed a new mission name then
       // prompt the user for one.
       if ( %missionName $= "" )
@@ -446,16 +414,10 @@ function EditorSaveMissionAs( %missionName )
       
       %savedTerrNames.delete();
    }
-   else
-   {
-      EditorSaveMissionMenuDisableSave();
-   }
-   
-}
 
 function EditorOpenMission(%filename)
 {
-   if( EditorIsDirty() && !isWebDemo() )
+   if( EditorIsDirty())
    {
       // "EditorSaveBeforeLoad();", "getLoadFilename(\"*.mis\", \"EditorDoLoadMission\");"
       if(MessageBox("Mission Modified", "Would you like to save changes to the current mission \"" @
@@ -523,8 +485,7 @@ function EditorOpenMission(%filename)
 
 function EditorExportToCollada()
 {
-   if ( !$Pref::disableSaving && !isWebDemo() )
-   {
+
       %dlg = new SaveFileDialog()
       {
          Filters        = "COLLADA Files (*.dae)|*.dae|";
@@ -554,13 +515,10 @@ function EditorExportToCollada()
       else
          EWorldEditor.colladaExportSelection( %exportFile );
    }
-}
 
 function EditorMakePrefab()
 {
-   // Should this be protected or not?
-   if ( !$Pref::disableSaving && !isWebDemo() )
-   {
+
       %dlg = new SaveFileDialog()
       {
          Filters        = "Prefab Files (*.prefab)|*.prefab|";
@@ -588,7 +546,6 @@ function EditorMakePrefab()
       EWorldEditor.makeSelectionPrefab( %saveFile );    
       
       EditorTree.buildVisibleTree( true );  
-   }
 }
 
 function EditorExplodePrefab()

@@ -46,6 +46,7 @@ function EWCreatorWindow::init( %this )
       %this.registerMissionObject( "SFXEmitter",          "Sound Emitter" );
       %this.registerMissionObject( "Precipitation" );
       %this.registerMissionObject( "ParticleEmitterNode", "Particle Emitter" );
+      %this.registerMissionObject( "RibbonNode", "Ribbon" );
       
       // Legacy features. Users should use Ground Cover and the Forest Editor.   
       //%this.registerMissionObject( "fxShapeReplicator",   "Shape Replicator" );
@@ -82,6 +83,7 @@ function EWCreatorWindow::init( %this )
       %this.registerMissionObject( "SpawnSphere",  "Observer Spawn Sphere", "ObserverDropPoint" );
       %this.registerMissionObject( "SFXSpace",      "Sound Space" );
       %this.registerMissionObject( "OcclusionVolume", "Occlusion Volume" );
+      %this.registerMissionObject( "AccumulationVolume", "Accumulation Volume" );
       %this.registerMissionObject("NavMesh", "Navigation mesh");
       %this.registerMissionObject("NavPath", "Path");
       
@@ -176,12 +178,6 @@ function EWCreatorWindow::createStatic( %this, %file )
    if ( !$missionRunning )
       return;
 
-   if(isFunction("getObjectLimit") && MissionGroup.getFullCount() >= getObjectLimit())
-   {
-      MessageBoxOKBuy( "Object Limit Reached", "You have exceeded the object limit of " @ getObjectLimit() @ " for this demo. You can remove objects if you would like to add more.", "", "Canvas.showPurchaseScreen(\"objectlimit\");" );
-      return;
-   }
-
    if( !isObject(%this.objectGroup) )
       %this.setNewObjectGroup( MissionGroup );
 
@@ -199,12 +195,6 @@ function EWCreatorWindow::createPrefab( %this, %file )
 {
    if ( !$missionRunning )
       return;
-
-   if(isFunction("getObjectLimit") && MissionGroup.getFullCount() >= getObjectLimit())
-   {
-      MessageBoxOKBuy( "Object Limit Reached", "You have exceeded the object limit of " @ getObjectLimit() @ " for this demo. You can remove objects if you would like to add more.", "", "Canvas.showPurchaseScreen(\"objectlimit\");" );
-      return;
-   }
 
    if( !isObject(%this.objectGroup) )
       %this.setNewObjectGroup( MissionGroup );
@@ -224,12 +214,6 @@ function EWCreatorWindow::createObject( %this, %cmd )
    if ( !$missionRunning )
       return;
 
-   if(isFunction("getObjectLimit") && MissionGroup.getFullCount() >= getObjectLimit())
-   {
-      MessageBoxOKBuy( "Object Limit Reached", "You have exceeded the object limit of " @ getObjectLimit() @ " for this demo. You can remove objects if you would like to add more.", "", "Canvas.showPurchaseScreen(\"objectlimit\");" );
-      return;
-   }
-      
    if( !isObject(%this.objectGroup) )
       %this.setNewObjectGroup( MissionGroup );
 
